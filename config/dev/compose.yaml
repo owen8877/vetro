@@ -1,0 +1,18 @@
+services:
+  postgres-vetro:
+    image: postgres:latest
+    ports:
+      - 12365:5432
+    volumes:
+      - $DB_DIR:/var/lib/postgresql/data
+    env_file:
+      - ../postgres/.env
+  main-vetro:
+    ports:
+      - 3001:$EXPRESS_PORT
+    build: ../..
+    depends_on:
+      - postgres-vetro
+    env_file:
+      - .env
+      - ../postgres/.env

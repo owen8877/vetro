@@ -1,0 +1,12 @@
+services:
+  postgres-vetro:
+    image: postgres:latest
+    ports:
+      - $POSTGRES_PORT:5432
+    build:
+      context: ../../src/server/db
+    volumes:
+      - $DEV_DB_DIR:/var/lib/postgresql/data
+    env_file:
+      - .env
+    container_name: postgres-vetro-dev

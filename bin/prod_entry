@@ -1,0 +1,6 @@
+#!/bin/sh
+
+bunx prisma generate
+bunx prisma migrate deploy
+# bunx prisma migrate status
+bun run src/server/index.ts
