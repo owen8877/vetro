@@ -1,7 +1,7 @@
 {
 	"name": "vetro",
 	"private": true,
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"type": "module",
 	"proxy": "http://localhost:3000",
 	"scripts": {
@@ -45,14 +45,14 @@
 	},
 	"devDependencies": {
 		"@0no-co/graphqlsp": "^1.4.2",
-		"@biomejs/biome": "1.5.3",
-		"@graphql-codegen/cli": "5.0.2",
-		"@graphql-codegen/client-preset": "4.2.4",
-		"@graphql-codegen/introspection": "4.0.3",
+		"@biomejs/biome": "^1.5.3",
+		"@graphql-codegen/cli": "^5.0.2",
+		"@graphql-codegen/client-preset": "^4.2.4",
+		"@graphql-codegen/introspection": "^4.0.3",
 		"@parcel/watcher": "^2.4.1",
 		"@types/express": "^4.17.21",
 		"@types/lodash": "^4.14.202",
-		"@types/react": "^18.2.56",
+		"@types/react": "^18.2.61",
 		"@types/react-dom": "^18.2.19",
 		"@types/uuid": "^9.0.8",
 		"@typescript-eslint/eslint-plugin": "^7.0.2",
