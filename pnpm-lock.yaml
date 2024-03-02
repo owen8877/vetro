@@ -5,6 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
+  grafast: ^0.1.1-beta.6
   graphql: ^16.8.1
 
 dependencies:

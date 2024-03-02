@@ -1,15 +1,10 @@
 import { createServer } from "node:http";
 import express from 'express';
 import postgraphile from 'postgraphile';
-
-import { is_development, is_production } from './util';
 import { grafserv } from "postgraphile/grafserv/express/v4";
 
+import { is_development } from './util';
 import preset from "./graphile.config";
-
-// Our PostGraphile instance:
-export const pgl = postgraphile(preset);
-const serv = pgl.createServ(grafserv);
 
 const app = express();
 app.use(express.static('dist'));  // Vite-compiled static files
@@ -24,8 +19,8 @@ server.on("error", (e) => {
   console.error(e);
 });
 
-// Add the Grafserv instance's route handlers to the Express app, and register
-// websockets if desired
+// Add the Grafserv instance's route handlers to the Express app, and register websockets if desired
+const serv = postgraphile(preset).createServ(grafserv);
 serv.addTo(app, server).catch((e) => {
   console.error(e);
   process.exit(1);
@@ -33,9 +28,8 @@ serv.addTo(app, server).catch((e) => {
 
 // Start the Express server
 server.listen(process.env.EXPRESS_PORT);
-console.log(process.env);
 const address = server.address();
 if (typeof address !== 'string') {
-  const href = `http://localhost:${address?.port}/graphiql'}`;
+  const href = `http://localhost:${address?.port}/graphql`;
   console.log(`PostGraphiQL available at ${href} 🚀`);
 }

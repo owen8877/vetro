@@ -11,6 +11,8 @@ datasource db {
 }
 
 model Player {
+  // to fix silly mistake by postgraphile (no update/deletion method)
+  id            Int       @id @default(autoincrement())
   uuid          String    @unique
   username      String    @default("")
   lastseen      DateTime  @default(now())

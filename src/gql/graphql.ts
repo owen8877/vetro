@@ -47,8 +47,16 @@ export type CreatePlayerPayload = {
   clientMutationId?: Maybe<Scalars['String']['output']>;
   /** The `Player` that was created by this mutation. */
   player?: Maybe<Player>;
+  /** An edge for our `Player`. May be used by Relay 1. */
+  playerEdge?: Maybe<PlayersEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+};
+
+
+/** The output of our create `Player` mutation. */
+export type CreatePlayerPayloadPlayerEdgeArgs = {
+  orderBy?: Array<PlayersOrderBy>;
 };
 
 /** All input for the create `_PrismaMigration` mutation. */
@@ -115,6 +123,50 @@ export type CreateTestPlayerPayload = {
 /** The output of our create `TestPlayer` mutation. */
 export type CreateTestPlayerPayloadTestPlayerEdgeArgs = {
   orderBy?: Array<TestPlayersOrderBy>;
+};
+
+/** All input for the `deletePlayerById` mutation. */
+export type DeletePlayerByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+};
+
+/** All input for the `deletePlayer` mutation. */
+export type DeletePlayerInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Player` to be deleted. */
+  nodeId: Scalars['ID']['input'];
+};
+
+/** The output of our delete `Player` mutation. */
+export type DeletePlayerPayload = {
+  __typename?: 'DeletePlayerPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedPlayerId?: Maybe<Scalars['ID']['output']>;
+  /** The `Player` that was deleted by this mutation. */
+  player?: Maybe<Player>;
+  /** An edge for our `Player`. May be used by Relay 1. */
+  playerEdge?: Maybe<PlayersEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `Player` mutation. */
+export type DeletePlayerPayloadPlayerEdgeArgs = {
+  orderBy?: Array<PlayersOrderBy>;
 };
 
 /** All input for the `deletePrismaMigrationById` mutation. */
@@ -214,6 +266,10 @@ export type Mutation = {
   createPrismaMigration?: Maybe<CreatePrismaMigrationPayload>;
   /** Creates a single `TestPlayer`. */
   createTestPlayer?: Maybe<CreateTestPlayerPayload>;
+  /** Deletes a single `Player` using its globally unique id. */
+  deletePlayer?: Maybe<DeletePlayerPayload>;
+  /** Deletes a single `Player` using a unique key. */
+  deletePlayerById?: Maybe<DeletePlayerPayload>;
   /** Deletes a single `_PrismaMigration` using its globally unique id. */
   deletePrismaMigration?: Maybe<DeletePrismaMigrationPayload>;
   /** Deletes a single `_PrismaMigration` using a unique key. */
@@ -222,6 +278,10 @@ export type Mutation = {
   deleteTestPlayer?: Maybe<DeleteTestPlayerPayload>;
   /** Deletes a single `TestPlayer` using a unique key. */
   deleteTestPlayerById?: Maybe<DeleteTestPlayerPayload>;
+  /** Updates a single `Player` using its globally unique id and a patch. */
+  updatePlayer?: Maybe<UpdatePlayerPayload>;
+  /** Updates a single `Player` using a unique key and a patch. */
+  updatePlayerById?: Maybe<UpdatePlayerPayload>;
   /** Updates a single `_PrismaMigration` using its globally unique id and a patch. */
   updatePrismaMigration?: Maybe<UpdatePrismaMigrationPayload>;
   /** Updates a single `_PrismaMigration` using a unique key and a patch. */
@@ -252,6 +312,18 @@ export type MutationCreateTestPlayerArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeletePlayerArgs = {
+  input: DeletePlayerInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeletePlayerByIdArgs = {
+  input: DeletePlayerByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeletePrismaMigrationArgs = {
   input: DeletePrismaMigrationInput;
 };
@@ -272,6 +344,18 @@ export type MutationDeleteTestPlayerArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteTestPlayerByIdArgs = {
   input: DeleteTestPlayerByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdatePlayerArgs = {
+  input: UpdatePlayerInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdatePlayerByIdArgs = {
+  input: UpdatePlayerByIdInput;
 };
 
 
@@ -317,15 +401,20 @@ export type PageInfo = {
   startCursor?: Maybe<Scalars['Cursor']['output']>;
 };
 
-export type Player = {
+export type Player = Node & {
   __typename?: 'Player';
+  id: Scalars['Int']['output'];
   lastseen: Scalars['Datetime']['output'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']['output'];
   username: Scalars['String']['output'];
   uuid: Scalars['String']['output'];
 };
 
 /** A condition to be used against `Player` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type PlayerCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['Int']['input']>;
   /** Checks for equality with the object’s `lastseen` field. */
   lastseen?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `username` field. */
@@ -336,9 +425,18 @@ export type PlayerCondition = {
 
 /** An input for mutations affecting `Player` */
 export type PlayerInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
   lastseen?: InputMaybe<Scalars['Datetime']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
   uuid: Scalars['String']['input'];
+};
+
+/** Represents an update to a `Player`. Fields that are set will be updated. */
+export type PlayerPatch = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  lastseen?: InputMaybe<Scalars['Datetime']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+  uuid?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** A connection to a list of `Player` values. */
@@ -365,9 +463,13 @@ export type PlayersEdge = {
 
 /** Methods to use when ordering `Player`. */
 export enum PlayersOrderBy {
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
   LastseenAsc = 'LASTSEEN_ASC',
   LastseenDesc = 'LASTSEEN_DESC',
   Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   UsernameAsc = 'USERNAME_ASC',
   UsernameDesc = 'USERNAME_DESC',
   UuidAsc = 'UUID_ASC',
@@ -397,6 +499,10 @@ export type Query = Node & {
   node?: Maybe<Node>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID']['output'];
+  /** Reads a single `Player` using its globally unique `ID`. */
+  player?: Maybe<Player>;
+  /** Get a single `Player`. */
+  playerById?: Maybe<Player>;
   /**
    * Exposes the root query type nested one level down. This is helpful for Relay 1
    * which can only query top level fields if they are in a particular form.
@@ -491,6 +597,18 @@ export type QueryNodeArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryPlayerArgs = {
+  nodeId: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryPlayerByIdArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryTestPlayerArgs = {
   nodeId: Scalars['ID']['input'];
 };
@@ -571,6 +689,53 @@ export enum TestPlayersOrderBy {
   UuidAsc = 'UUID_ASC',
   UuidDesc = 'UUID_DESC'
 }
+
+/** All input for the `updatePlayerById` mutation. */
+export type UpdatePlayerByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+  /** An object where the defined keys will be set on the `Player` being updated. */
+  playerPatch: PlayerPatch;
+};
+
+/** All input for the `updatePlayer` mutation. */
+export type UpdatePlayerInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Player` to be updated. */
+  nodeId: Scalars['ID']['input'];
+  /** An object where the defined keys will be set on the `Player` being updated. */
+  playerPatch: PlayerPatch;
+};
+
+/** The output of our update `Player` mutation. */
+export type UpdatePlayerPayload = {
+  __typename?: 'UpdatePlayerPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `Player` that was updated by this mutation. */
+  player?: Maybe<Player>;
+  /** An edge for our `Player`. May be used by Relay 1. */
+  playerEdge?: Maybe<PlayersEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `Player` mutation. */
+export type UpdatePlayerPayloadPlayerEdgeArgs = {
+  orderBy?: Array<PlayersOrderBy>;
+};
 
 /** All input for the `updatePrismaMigrationById` mutation. */
 export type UpdatePrismaMigrationByIdInput = {
@@ -772,6 +937,56 @@ export enum _PrismaMigrationsOrderBy {
   StartedAtDesc = 'STARTED_AT_DESC'
 }
 
+export type AllPlayersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllPlayersQuery = { __typename?: 'Query', allPlayers?: { __typename?: 'PlayersConnection', nodes: Array<(
+      { __typename?: 'Player' }
+      & { ' $fragmentRefs'?: { 'PlayerItemFragment': PlayerItemFragment } }
+    )> } | null };
+
+export type MyPlayerQueryVariables = Exact<{
+  uuid?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type MyPlayerQuery = { __typename?: 'Query', allPlayers?: { __typename?: 'PlayersConnection', nodes: Array<(
+      { __typename?: 'Player' }
+      & { ' $fragmentRefs'?: { 'PlayerItemFragment': PlayerItemFragment } }
+    )> } | null };
+
+export type AddPlayerMutationVariables = Exact<{
+  new_player?: InputMaybe<CreatePlayerInput>;
+}>;
+
+
+export type AddPlayerMutation = { __typename?: 'Mutation', createPlayer?: { __typename?: 'CreatePlayerPayload', player?: { __typename?: 'Player', uuid: string, nodeId: string, username: string } | null } | null };
+
+export type UpdatePlayerUsernameMutationVariables = Exact<{
+  nodeId?: InputMaybe<Scalars['ID']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type UpdatePlayerUsernameMutation = { __typename?: 'Mutation', updatePlayer?: { __typename?: 'UpdatePlayerPayload', clientMutationId?: string | null } | null };
+
+export type UpdatePlayerLastseenMutationVariables = Exact<{
+  nodeId?: InputMaybe<Scalars['ID']['input']>;
+  lastseen?: InputMaybe<Scalars['Datetime']['input']>;
+}>;
+
+
+export type UpdatePlayerLastseenMutation = { __typename?: 'Mutation', updatePlayer?: { __typename?: 'UpdatePlayerPayload', clientMutationId?: string | null } | null };
+
+export type RemovePlayerMutationVariables = Exact<{
+  nodeId?: InputMaybe<Scalars['ID']['input']>;
+}>;
+
+
+export type RemovePlayerMutation = { __typename?: 'Mutation', deletePlayer?: { __typename?: 'DeletePlayerPayload', clientMutationId?: string | null } | null };
+
+export type PlayerItemFragment = { __typename?: 'Player', id: number, nodeId: string, uuid: string, username: string, lastseen: any } & { ' $fragmentName'?: 'PlayerItemFragment' };
+
 export type AllTestPlayersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -796,7 +1011,14 @@ export type RemoveTestPlayerMutation = { __typename?: 'Mutation', deleteTestPlay
 
 export type TestPlayerItemFragment = { __typename?: 'TestPlayer', id: number, nodeId: string, username: string, uuid: string } & { ' $fragmentName'?: 'TestPlayerItemFragment' };
 
+export const PlayerItemFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PlayerItem"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Player"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"nodeId"}},{"kind":"Field","name":{"kind":"Name","value":"uuid"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"lastseen"}}]}}]} as unknown as DocumentNode<PlayerItemFragment, unknown>;
 export const TestPlayerItemFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TestPlayerItem"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TestPlayer"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"nodeId"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"uuid"}}]}}]} as unknown as DocumentNode<TestPlayerItemFragment, unknown>;
+export const AllPlayersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"allPlayers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allPlayers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PlayerItem"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PlayerItem"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Player"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"nodeId"}},{"kind":"Field","name":{"kind":"Name","value":"uuid"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"lastseen"}}]}}]} as unknown as DocumentNode<AllPlayersQuery, AllPlayersQueryVariables>;
+export const MyPlayerDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"myPlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"uuid"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allPlayers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"uuid"},"value":{"kind":"Variable","name":{"kind":"Name","value":"uuid"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PlayerItem"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PlayerItem"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Player"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"nodeId"}},{"kind":"Field","name":{"kind":"Name","value":"uuid"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"lastseen"}}]}}]} as unknown as DocumentNode<MyPlayerQuery, MyPlayerQueryVariables>;
+export const AddPlayerDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"addPlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"new_player"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"CreatePlayerInput"}},"defaultValue":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"player"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"uuid"},"value":{"kind":"StringValue","value":"","block":false}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createPlayer"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"new_player"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"player"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uuid"}},{"kind":"Field","name":{"kind":"Name","value":"nodeId"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]}}]} as unknown as DocumentNode<AddPlayerMutation, AddPlayerMutationVariables>;
+export const UpdatePlayerUsernameDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updatePlayerUsername"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nodeId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"username"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updatePlayer"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"playerPatch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"username"},"value":{"kind":"Variable","name":{"kind":"Name","value":"username"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"nodeId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nodeId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<UpdatePlayerUsernameMutation, UpdatePlayerUsernameMutationVariables>;
+export const UpdatePlayerLastseenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updatePlayerLastseen"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nodeId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"lastseen"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updatePlayer"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"playerPatch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"lastseen"},"value":{"kind":"Variable","name":{"kind":"Name","value":"lastseen"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"nodeId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nodeId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<UpdatePlayerLastseenMutation, UpdatePlayerLastseenMutationVariables>;
+export const RemovePlayerDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"removePlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nodeId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deletePlayer"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nodeId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nodeId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<RemovePlayerMutation, RemovePlayerMutationVariables>;
 export const AllTestPlayersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"allTestPlayers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allTestPlayers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TestPlayerItem"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TestPlayerItem"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TestPlayer"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"nodeId"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"uuid"}}]}}]} as unknown as DocumentNode<AllTestPlayersQuery, AllTestPlayersQueryVariables>;
 export const AddTestPlayerDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"addTestPlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"new_testPlayer"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateTestPlayerInput"}},"defaultValue":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"testPlayer"},"value":{"kind":"ObjectValue","fields":[]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTestPlayer"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"new_testPlayer"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"testPlayer"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]}}]} as unknown as DocumentNode<AddTestPlayerMutation, AddTestPlayerMutationVariables>;
 export const RemoveTestPlayerDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"removeTestPlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nodeId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteTestPlayer"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nodeId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nodeId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"testPlayer"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]}}]} as unknown as DocumentNode<RemoveTestPlayerMutation, RemoveTestPlayerMutationVariables>;

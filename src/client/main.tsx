@@ -6,6 +6,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import './index.css'
 import TestPlayers from './test_player';
 import Graph from './digraph';
+import Player from './player';
 import { is_production } from '../server/util';
 
 function Root() {
@@ -16,10 +17,13 @@ function Root() {
         <nav>
           <ul>
             <li>
-              <Link to={`/test_player`}>[Test] Player & Database</Link>
+              <Link to={`/player`}>Active Player</Link>
             </li>
             <li>
               <Link to={`/graph`}>Graph</Link>
+            </li>
+            <li>
+              <Link to={`/test_player`}>[Test] Player & Database</Link>
             </li>
           </ul>
         </nav>
@@ -31,11 +35,23 @@ function Root() {
   );
 }
 
+function Index() {
+  return (
+    <p id="zero-state">
+      This is a demo for React Router.
+    </p>
+  );
+}
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     children: [
+      {
+        path: "player",
+        element: <Player />,
+      },
       {
         path: "test_player",
         element: <TestPlayers />,
@@ -44,6 +60,10 @@ const router = createBrowserRouter([
         path: "graph",
         element: <Graph />,
       },
+      {
+        index: true,
+        element: <Index />,
+      }
     ],
   },
 ]);
@@ -56,8 +76,10 @@ const client = new ApolloClient({
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
+    {/* <> */}
     <ApolloProvider client={client}>
       <RouterProvider router={router} />
     </ApolloProvider>
+    {/* </> */}
   </React.StrictMode>
 )

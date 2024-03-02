@@ -52,7 +52,7 @@ export default function TestPlayers() {
     const { data } = await addTestPlayerMutation({
       variables: { new_testPlayer: { testPlayer: { username: 'cc', uuid: '12345' } } },
     });
-    refetch();
+    await refetch();
     console.log(`TestPlayer ${data?.createTestPlayer?.testPlayer?.username} is created!`);
   }
 
@@ -64,7 +64,7 @@ export default function TestPlayers() {
     }
     const firstNodeId = testPlayers[0].nodeId;
     const { data } = await removeTestPlayerMutation({ variables: { nodeId: firstNodeId } });
-    refetch();
+    await refetch();
     console.log(`TestPlayer ${data?.deleteTestPlayer?.testPlayer?.username} is deleted!`);
   }
 
