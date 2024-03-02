@@ -158,14 +158,21 @@ export default function Players() {
       if (lodash.isNil(myUUID)) {
         return;
       }
-      const job = async () => {
+      const refreshMyPlayerJob = async () => {
         const nodeId = myPlayer?.nodeId;
         if (lodash.isNil(nodeId)) {
           return;
         }
         await updatePlayerL({ variables: { nodeId, lastseen: getCurrentTimeString() } });
       };
-      job().then().catch(console.error);
+      const pullAllPlayersJob = async () => {
+        await sAllPlayers.refetch();
+      };
+      if (lodash.isNil(myPlayer)) {
+        pullAllPlayersJob().then().catch(console.error);
+      } else {
+        refreshMyPlayerJob().then().catch(console.error);
+      }
     },
     5000
   );
