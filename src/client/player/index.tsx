@@ -3,67 +3,11 @@ import { v4 as uuidv4 } from "uuid";
 import { useAsync, useInterval } from "react-use";
 import lodash from 'lodash';
 import localforage from "localforage";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
-import { graphql } from "../../gql";
-import Player from "./model";
-
-const allPlayersQueryDocument = graphql(/* GraphQL */ `
-  query allPlayers {
-    allPlayers {
-      nodes {
-        ...PlayerItem
-      }
-    }
-  }
-`);
-
-const myPlayerQueryDocument = graphql(/* GraphQL */ `
-  query myPlayer($uuid: String = "") {
-    allPlayers(condition: { uuid: $uuid }, first: 1) {
-      nodes {
-        ...PlayerItem
-      }
-    }
-  }
-`);
-
-
-const addPlayerDocument = graphql(/* GraphQL */ `
-  mutation addPlayer($new_player: CreatePlayerInput = { player: { uuid: "" } }) {
-    createPlayer(input: $new_player) {
-      player {
-        uuid
-        nodeId
-        username
-      }
-    }
-  }
-`);
-
-const updatePlayerUsernameDocument = graphql(/* GraphQL */ `
-  mutation updatePlayerUsername($nodeId: ID = "", $username: String = "") {
-    updatePlayer(input: { playerPatch: {username: $username}, nodeId: $nodeId }) {
-      clientMutationId
-    }
-  }
-`);
-
-const updatePlayerLastseenDocument = graphql(/* GraphQL */ `
-  mutation updatePlayerLastseen($nodeId: ID = "", $lastseen: Datetime = "") {
-    updatePlayer(input: { playerPatch: {lastseen: $lastseen, }, nodeId: $nodeId }) {
-      clientMutationId
-    }
-  }
-`);
-
-const removePlayerDocument = graphql(/* GraphQL */ `
-  mutation removePlayer($nodeId: ID = "") {
-    deletePlayer(input: { nodeId: $nodeId }) {
-      clientMutationId
-    }
-  }
-`);
+import { Player, _t_player } from "./render";
+import { addPlayerDocument, allPlayersQueryDocument, myPlayerQueryDocument, removePlayerDocument, updatePlayerLastseenDocument, updatePlayerUsernameDocument } from "./model";
 
 const getUUIDFromStorage = async () => {
   const UUID_KEY = 'UUID_KEY';
@@ -76,40 +20,95 @@ const getUUIDFromStorage = async () => {
   return new_uuid;
 };
 
-function getPlayers({ sAllPlayers }) {
-  return sAllPlayers?.data?.allPlayers?.nodes;
-}
-
-function getMyPlayer({ sMyPlayer }) {
-  const players = sMyPlayer?.data?.allPlayers?.nodes;
-  if (lodash.isUndefined(players) || players.length <= 0) {
-    return undefined;
-  }
-  return players[0];
-}
-
-function getPlayersOtherThanMe({ sAllPlayers, sUUID }) {
-  const players = getPlayers(sAllPlayers);
-  const myUUID = sUUID?.value;
-  if (lodash.isUndefined(myUUID)) {
-    return players;
-  }
-  return players?.filter(player => player.uuid !== myUUID);
-}
-
-function getUUID({ sUUID }) {
-  return sUUID.value;
-}
-
 function getCurrentTimeString() {
   return (new Date()).toISOString();
 }
 
+function AddPlayerArea(props: { addPlayer, myUUID: string | undefined }) {
+  const { addPlayer, myUUID } = props;
+
+  type AddPlayerInput = {
+    username: string,
+  };
+  const fAddPlayer = useForm<AddPlayerInput>({ defaultValues: { username: '' } });
+
+  async function onAddPlayer(data: AddPlayerInput) {
+    const username = data.username as string;
+
+    const { data: payload } = await addPlayer({
+      variables: { new_player: { player: { username, uuid: myUUID, lastseen: getCurrentTimeString() } } },
+    });
+    console.log(`Player ${payload?.createPlayer?.player?.username} is created!`);
+  }
+
+  if (lodash.isNil(myUUID)) {
+    return <p>UUID is still null, cannot add!</p>
+  }
+  return (<div>
+    <form method="post" onSubmit={fAddPlayer.handleSubmit((e) => onAddPlayer(e).then())}>
+      <label>
+        Your username: <input key='input-create' {...fAddPlayer.register("username")} />
+      </label>
+      <button type="submit">Add me to the party!</button>
+    </form>
+  </div>)
+}
+
+function UpdatePlayerArea(props: { updatePlayerU, removePlayer, nodeId: string | undefined }) {
+  type UpdatePlayerUsernameInput = {
+    username: string,
+  };
+  const fUpdatePlayerUsername = useForm<UpdatePlayerUsernameInput>({ defaultValues: { username: '' } });
+
+  const { updatePlayerU, removePlayer, nodeId } = props;
+
+  async function onUpdatePlayer({ username }: UpdatePlayerUsernameInput) {
+    await updatePlayerU({ variables: { nodeId, username } });
+    console.log("Player is updated!");
+  }
+
+  async function onDeletePlayer() {
+    await removePlayer({ variables: { nodeId } });
+    console.log("Player deleted!");
+  }
+
+  if (lodash.isNil(nodeId)) {
+    return <p>nodeId is null, cannot update/remove!</p>
+  }
+  return (<div>
+    <form method="post" onSubmit={fUpdatePlayerUsername.handleSubmit(username => onUpdatePlayer(username).then())}>
+      <label>
+        Your username: <input key='input-update' {...fUpdatePlayerUsername.register("username")} />
+      </label>
+      <button type="submit">Change my name!</button>
+    </form>
+    <button type="button" onClick={onDeletePlayer}>Remove me from server!</button>
+  </div>)
+}
+
+function PlayerList(props: { allPlayers: _t_player[] | undefined, myPlayer: _t_player | undefined }) {
+  const { allPlayers, myPlayer } = props;
+  if (lodash.isNil(allPlayers)) {
+    return <p>No players found!</p>
+  }
+  return (<ul>{allPlayers.map(
+    e => (<li key={`player-${e.nodeId}`}>
+      <Player player={e} me={myPlayer?.uuid === e.uuid} />
+    </li>)
+  )}</ul>);
+}
+
 export default function Players() {
+  // Define all static states
+  const [myUUID, setMyUUID] = useState<string | undefined>(undefined);
+  const [myPlayer, setMyPlayer] = useState<_t_player | undefined>(undefined);
+  const [allPlayers, setAllPlayers] = useState<_t_player[] | undefined>(undefined);
+  const [refreshCount, setRefreshCount] = useState(0);
+
+  // Define query/mutation documents
   const refetches = { refetchQueries: [allPlayersQueryDocument, myPlayerQueryDocument] };
-  const [showAdd, setShowAdd] = useState(false);
   const [addPlayer, sAddPlayer] = useMutation(addPlayerDocument, refetches);
-  const [showUpdate, setShowUpdate] = useState(false);
+
   const [updatePlayerL, sUpdatePlayerL] = useMutation(updatePlayerLastseenDocument, refetches);
   const [updatePlayerU, sUpdatePlayerU] = useMutation(updatePlayerUsernameDocument, refetches);
   const [removePlayer, sRemovePlayer] = useMutation(removePlayerDocument, refetches);
@@ -117,122 +116,76 @@ export default function Players() {
   const sAllPlayers = useQuery(allPlayersQueryDocument);
   const sUUID = useAsync(getUUIDFromStorage);
   const [queryMyPlayer, sMyPlayer] = useLazyQuery(myPlayerQueryDocument);
-
-  const [refreshCount, setRefreshCount] = useState(0);
+  type _t_sMyPlayer = typeof sMyPlayer;
 
   // Load my player once UUID is ready
   useEffect(() => {
-    if (lodash.isNil(sUUID.value)) {
+    const _myUUID = sUUID.value;
+    if (lodash.isNil(_myUUID)) {
       return;
     }
-    queryMyPlayer({ variables: { uuid: sUUID.value } }).then().catch(console.log);
-  }, [sUUID.value]);
+    setMyUUID(_myUUID);
+    queryMyPlayer({ variables: { uuid: _myUUID } }).then().catch(console.error);
+  }, [sUUID, queryMyPlayer]);
+
+  // Make sure that myPlayerAdded reflects sMyPlayer valid
+  useEffect(() => {
+    if (lodash.isNil(sMyPlayer.data)) {
+      return;
+    }
+    function _get(sMyPlayer: _t_sMyPlayer): _t_player | undefined {
+      const players = sMyPlayer?.data?.allPlayers?.nodes;
+      if (lodash.isUndefined(players) || players.length <= 0) {
+        return undefined;
+      }
+      return players[0];
+    }
+    setMyPlayer(_get(sMyPlayer));
+  }, [sMyPlayer]);
 
   useEffect(() => {
-    const findsMyPlayer = !lodash.isUndefined(getMyPlayer({ sMyPlayer }));
+    if (sAllPlayers.error) {
+      console.error(sAllPlayers.error);
+      return;
+    }
+    setAllPlayers(sAllPlayers?.data?.allPlayers?.nodes);
+  }, [sAllPlayers]);
 
-    setShowAdd(!findsMyPlayer);
-    setShowUpdate(findsMyPlayer);
-  }, [sMyPlayer.data]);
-
+  // Global refresh timer
   useInterval(
     () => {
-      if (getUUID({ sUUID })) {
-        const job = async () => {
-          const myPlayer = getMyPlayer({ sMyPlayer });
-          const update = { nodeId: myPlayer?.nodeId, lastseen: getCurrentTimeString() };
-          await updatePlayerL({ variables: update, });
-        };
-        job().then().catch(console.error);
-      }
       setRefreshCount(refreshCount + 1);
+      if (lodash.isNil(myUUID)) {
+        return;
+      }
+      const job = async () => {
+        const nodeId = myPlayer?.nodeId;
+        if (lodash.isNil(nodeId)) {
+          return;
+        }
+        await updatePlayerL({ variables: { nodeId, lastseen: getCurrentTimeString() } });
+      };
+      job().then().catch(console.error);
     },
     5000
   );
 
-  function AddPlayerArea(props: { show: boolean, sUUID }) {
-    if (!props.show) {
-      return null;
-    }
-
-    async function handleAddPlayer(e: FormEvent) {
-      e.preventDefault();
-
-      const myUUID = getUUID({ sUUID: props.sUUID }) as string;
-      const form = e.target;
-      const formData = new FormData(form);
-      const formJson = Object.fromEntries(formData.entries());
-      const username = formJson.username_input as string;
-
-      const { data } = await addPlayer({
-        variables: { new_player: { player: { username, uuid: myUUID, lastseen: getCurrentTimeString() } } },
-      });
-      console.log(`Player ${data?.createPlayer?.player?.username} is created!`);
-    }
-
-    return (<div>
-      <form method="post" onSubmit={handleAddPlayer}>
-        <label>
-          Your username: <input name="username_input" />
-        </label>
-        <button type="submit">Add me to the party!</button>
-      </form>
-    </div>)
-  }
-
-  function UpdatePlayerArea(props: { show: boolean, sMyPlayer }) {
-    if (!props.show) {
-      return null;
-    }
-
-    async function handleUpdatePlayer(e: FormEvent) {
-      e.preventDefault();
-
-      const myPlayer = getMyPlayer({ sMyPlayer: props.sMyPlayer });
-      const form = e.target;
-      const formData = new FormData(form);
-      const formJson = Object.fromEntries(formData.entries());
-      const username = formJson.username_input as string;
-
-      await updatePlayerU({ variables: { nodeId: myPlayer?.nodeId, username } });
-      console.log(`Player is updated!`);
-    }
-
-    async function handleDeletePlayer() {
-      const myPlayer = getMyPlayer({ sMyPlayer: props.sMyPlayer });
-      await removePlayer({ variables: { nodeId: myPlayer?.nodeId } });
-      console.log(`Player deleted!`);
-    }
-
-    return (<div>
-      <form method="post" onSubmit={handleUpdatePlayer}>
-        <label>
-          Your username: <input name="username_input" />
-        </label>
-        <button type="submit">Change my name!</button>
-      </form>
-      <button type="button" onClick={handleDeletePlayer}>Remove me from server!</button>
-    </div>)
-  }
-
-  function PlayerList(props: { sAllPlayers, sMyPlayer }) {
-    if (sAllPlayers.loading) {
-      return <p>Loading player list...</p>;
-    }
-    const myPlayer = getMyPlayer({ sMyPlayer: props.sMyPlayer });
-    return (<ul>{getPlayers({ sAllPlayers: props.sAllPlayers })?.map(
-      e => (<li key={`player-${e.nodeId}`}>
-        <Player player={e} me={myPlayer?.uuid === e.uuid} />
-      </li>)
-    )}</ul>);
-  }
-
   return (
     <>
-      <AddPlayerArea show={showAdd} sUUID={sUUID} />
-      <UpdatePlayerArea show={showUpdate} sMyPlayer={sMyPlayer} />
-      <p>My uuid: {sUUID.loading ? '[Loading...]' : sUUID.value}</p>
-      <PlayerList sAllPlayers={sAllPlayers} sMyPlayer={sMyPlayer} />
+      {
+        lodash.isNil(myUUID)
+          ? <p>Loading uuid...</p>
+          : (<>
+            {!myPlayer && <AddPlayerArea {...{ addPlayer, myUUID }} />}
+            {myPlayer && <UpdatePlayerArea {...{ updatePlayerU, removePlayer, nodeId: myPlayer?.nodeId }} />}
+            <p>My uuid: {myUUID}</p>
+            {
+              sAllPlayers.loading
+                ? <p>Loading all players</p>
+                : <PlayerList {...{ allPlayers, myPlayer }} />
+            }
+          </>)
+      }
     </>
   );
 }

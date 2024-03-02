@@ -937,6 +937,8 @@ export enum _PrismaMigrationsOrderBy {
   StartedAtDesc = 'STARTED_AT_DESC'
 }
 
+export type PlayerItemFragment = { __typename?: 'Player', id: number, nodeId: string, uuid: string, username: string, lastseen: any } & { ' $fragmentName'?: 'PlayerItemFragment' };
+
 export type AllPlayersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -984,8 +986,6 @@ export type RemovePlayerMutationVariables = Exact<{
 
 
 export type RemovePlayerMutation = { __typename?: 'Mutation', deletePlayer?: { __typename?: 'DeletePlayerPayload', clientMutationId?: string | null } | null };
-
-export type PlayerItemFragment = { __typename?: 'Player', id: number, nodeId: string, uuid: string, username: string, lastseen: any } & { ' $fragmentName'?: 'PlayerItemFragment' };
 
 export type AllTestPlayersQueryVariables = Exact<{ [key: string]: never; }>;
 

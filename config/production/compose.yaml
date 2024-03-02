@@ -8,9 +8,10 @@ services:
     env_file:
       - ../postgres/.env
   main-vetro:
+    image: xdroid173/vetro:v0.0.3
     ports:
       - 3001:$EXPRESS_PORT
-    build: ../..
+    # build: ../..
     depends_on:
       - postgres-vetro
     env_file:
