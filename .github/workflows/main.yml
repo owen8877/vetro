@@ -23,10 +23,13 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Build and push
+    - name: Build and push (current ref)
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags:
-        - xdroid173/vetro:${{ github.ref_name }}
-        - xdroid173/vetro:latest
+        tags: xdroid173/vetro:${{ github.ref_name }}
+    - name: Build and push (latest)
+      uses: docker/build-push-action@v5
+      with:
+        push: true
+        tags: xdroid173/vetro:latest
