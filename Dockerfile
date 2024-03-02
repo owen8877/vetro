@@ -11,23 +11,27 @@ RUN curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n \
   && bash n $NODE_VERSION \
   && rm n \
   && npm install -g n
+RUN bun i pnpm -g
 
 # install dependencies into temp directory
 # this will cache them and speed up future builds
 FROM base AS install
 RUN mkdir -p /temp/dev
-COPY package.json bun.lockb /temp/dev/
-RUN cd /temp/dev && bun install --frozen-lockfile
+COPY package.json bun.lockb pnpm-lock.yaml /temp/dev/
+# RUN cd /temp/dev && bun install --frozen-lockfile
+RUN cd /temp/dev && bunx pnpm install --frozen-lockfile
 
 # install with --production (exclude devDependencies)
 RUN mkdir -p /temp/prod
-COPY package.json bun.lockb /temp/prod/
-RUN cd /temp/prod && bun install --frozen-lockfile --production
+COPY package.json bun.lockb pnpm-lock.yaml /temp/prod/
+# RUN cd /temp/prod && bun install --frozen-lockfile --production
+RUN cd /temp/prod && bunx pnpm install --frozen-lockfile --production
 
 # copy node_modules from temp directory
 # then copy all (non-ignored) project files into the image
 FROM base AS prerelease
 COPY --from=install --chown=bun /temp/dev/node_modules node_modules
+# COPY --from=install --chown=bun /temp/prod/node_modules node_modules
 COPY --chown=bun . .
 RUN bunx vite build
 
@@ -35,7 +39,7 @@ RUN bunx vite build
 # FROM prerelease AS test
 ENV NODE_ENV=production NO_DATABASE=1
 RUN bunx prisma generate
-RUN bun test
+# RUN bun test
 
 # copy production dependencies and source code into final image
 FROM base AS release

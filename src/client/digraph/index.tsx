@@ -21,7 +21,7 @@ import GraphConfig, {
   SPECIAL_EDGE_TYPE,
   SPECIAL_TYPE,
   SKINNY_TYPE,
-} from "./my-graph-config"; // Configures node/edge types
+} from "./config"; // Configures node/edge types
 
 type IGraph = {
   nodes: INode[];
