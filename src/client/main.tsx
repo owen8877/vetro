@@ -5,6 +5,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 import './index.css'
 import TestPlayers from './test_player';
+import TestLocalInteraction from './test_local_interaction';
 import Graph from './digraph';
 import Player from './player';
 import { is_production } from '../server/util';
@@ -17,13 +18,16 @@ function Root() {
         <nav>
           <ul>
             <li>
-              <Link to={`/player`}>Active Player</Link>
+              <Link to={"/player"}>Active Player</Link>
             </li>
             <li>
-              <Link to={`/graph`}>Graph</Link>
+              <Link to={"/graph"}>Graph</Link>
             </li>
             <li>
-              <Link to={`/test_player`}>[Test] Player & Database</Link>
+              <Link to={"/test_player"}>[Test] Player & Database</Link>
+            </li>
+            <li>
+              <Link to={"/test_local_interaction"}>[Test] local interaction</Link>
             </li>
           </ul>
         </nav>
@@ -59,6 +63,10 @@ const router = createBrowserRouter([
       {
         path: "graph",
         element: <Graph />,
+      },
+      {
+        path: "test_local_interaction",
+        element: <TestLocalInteraction />,
       },
       {
         index: true,
