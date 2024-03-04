@@ -68,6 +68,76 @@ type CreatePrismaMigrationPayload {
   query: Query
 }
 
+"""All input for the create `Test3Game` mutation."""
+input CreateTest3GameInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Test3Game` to be created by this mutation."""
+  test3Game: Test3GameInput!
+}
+
+"""The output of our create `Test3Game` mutation."""
+type CreateTest3GamePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Test3Game` that was created by this mutation."""
+  test3Game: Test3Game
+
+  """An edge for our `Test3Game`. May be used by Relay 1."""
+  test3GameEdge(
+    """The method to use when ordering `Test3Game`."""
+    orderBy: [Test3GamesOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): Test3GamesEdge
+}
+
+"""All input for the create `Test3PlayerAction` mutation."""
+input CreateTest3PlayerActionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Test3PlayerAction` to be created by this mutation."""
+  test3PlayerAction: Test3PlayerActionInput!
+}
+
+"""The output of our create `Test3PlayerAction` mutation."""
+type CreateTest3PlayerActionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Test3PlayerAction` that was created by this mutation."""
+  test3PlayerAction: Test3PlayerAction
+
+  """An edge for our `Test3PlayerAction`. May be used by Relay 1."""
+  test3PlayerActionEdge(
+    """The method to use when ordering `Test3PlayerAction`."""
+    orderBy: [Test3PlayerActionsOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): Test3PlayerActionsEdge
+}
+
 """All input for the create `TestPlayer` mutation."""
 input CreateTestPlayerInput {
   """
@@ -211,6 +281,102 @@ type DeletePrismaMigrationPayload {
   query: Query
 }
 
+"""All input for the `deleteTest3GameById` mutation."""
+input DeleteTest3GameByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: Int!
+}
+
+"""All input for the `deleteTest3Game` mutation."""
+input DeleteTest3GameInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Test3Game` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""The output of our delete `Test3Game` mutation."""
+type DeleteTest3GamePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedTest3GameId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Test3Game` that was deleted by this mutation."""
+  test3Game: Test3Game
+
+  """An edge for our `Test3Game`. May be used by Relay 1."""
+  test3GameEdge(
+    """The method to use when ordering `Test3Game`."""
+    orderBy: [Test3GamesOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): Test3GamesEdge
+}
+
+"""All input for the `deleteTest3PlayerActionById` mutation."""
+input DeleteTest3PlayerActionByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: Int!
+}
+
+"""All input for the `deleteTest3PlayerAction` mutation."""
+input DeleteTest3PlayerActionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Test3PlayerAction` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""The output of our delete `Test3PlayerAction` mutation."""
+type DeleteTest3PlayerActionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedTest3PlayerActionId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Test3PlayerAction` that was deleted by this mutation."""
+  test3PlayerAction: Test3PlayerAction
+
+  """An edge for our `Test3PlayerAction`. May be used by Relay 1."""
+  test3PlayerActionEdge(
+    """The method to use when ordering `Test3PlayerAction`."""
+    orderBy: [Test3PlayerActionsOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): Test3PlayerActionsEdge
+}
+
 """All input for the `deleteTestPlayerById` mutation."""
 input DeleteTestPlayerByIdInput {
   """
@@ -279,6 +445,22 @@ type Mutation {
     input: CreatePrismaMigrationInput!
   ): CreatePrismaMigrationPayload
 
+  """Creates a single `Test3Game`."""
+  createTest3Game(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateTest3GameInput!
+  ): CreateTest3GamePayload
+
+  """Creates a single `Test3PlayerAction`."""
+  createTest3PlayerAction(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateTest3PlayerActionInput!
+  ): CreateTest3PlayerActionPayload
+
   """Creates a single `TestPlayer`."""
   createTestPlayer(
     """
@@ -318,6 +500,38 @@ type Mutation {
     """
     input: DeletePrismaMigrationByIdInput!
   ): DeletePrismaMigrationPayload
+
+  """Deletes a single `Test3Game` using its globally unique id."""
+  deleteTest3Game(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteTest3GameInput!
+  ): DeleteTest3GamePayload
+
+  """Deletes a single `Test3Game` using a unique key."""
+  deleteTest3GameById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteTest3GameByIdInput!
+  ): DeleteTest3GamePayload
+
+  """Deletes a single `Test3PlayerAction` using its globally unique id."""
+  deleteTest3PlayerAction(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteTest3PlayerActionInput!
+  ): DeleteTest3PlayerActionPayload
+
+  """Deletes a single `Test3PlayerAction` using a unique key."""
+  deleteTest3PlayerActionById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteTest3PlayerActionByIdInput!
+  ): DeleteTest3PlayerActionPayload
 
   """Deletes a single `TestPlayer` using its globally unique id."""
   deleteTestPlayer(
@@ -368,6 +582,40 @@ type Mutation {
     """
     input: UpdatePrismaMigrationByIdInput!
   ): UpdatePrismaMigrationPayload
+
+  """Updates a single `Test3Game` using its globally unique id and a patch."""
+  updateTest3Game(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateTest3GameInput!
+  ): UpdateTest3GamePayload
+
+  """Updates a single `Test3Game` using a unique key and a patch."""
+  updateTest3GameById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateTest3GameByIdInput!
+  ): UpdateTest3GamePayload
+
+  """
+  Updates a single `Test3PlayerAction` using its globally unique id and a patch.
+  """
+  updateTest3PlayerAction(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateTest3PlayerActionInput!
+  ): UpdateTest3PlayerActionPayload
+
+  """Updates a single `Test3PlayerAction` using a unique key and a patch."""
+  updateTest3PlayerActionById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateTest3PlayerActionByIdInput!
+  ): UpdateTest3PlayerActionPayload
 
   """
   Updates a single `TestPlayer` using its globally unique id and a patch.
@@ -604,6 +852,98 @@ type Query implements Node {
     orderBy: [_PrismaMigrationsOrderBy!]
   ): [_PrismaMigration!]
 
+  """Reads and enables pagination through a set of `Test3Game`."""
+  allTest3Games(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: Test3GameCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Test3Game`."""
+    orderBy: [Test3GamesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): Test3GamesConnection
+
+  """Reads a set of `Test3Game`."""
+  allTest3GamesList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: Test3GameCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Test3Game`."""
+    orderBy: [Test3GamesOrderBy!]
+  ): [Test3Game!]
+
+  """Reads and enables pagination through a set of `Test3PlayerAction`."""
+  allTest3PlayerActions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: Test3PlayerActionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Test3PlayerAction`."""
+    orderBy: [Test3PlayerActionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): Test3PlayerActionsConnection
+
+  """Reads a set of `Test3PlayerAction`."""
+  allTest3PlayerActionsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: Test3PlayerActionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Test3PlayerAction`."""
+    orderBy: [Test3PlayerActionsOrderBy!]
+  ): [Test3PlayerAction!]
+
   """Reads and enables pagination through a set of `TestPlayer`."""
   allTestPlayers(
     """Read all values in the set after (below) this cursor."""
@@ -676,6 +1016,26 @@ type Query implements Node {
   """
   query: Query!
 
+  """Reads a single `Test3Game` using its globally unique `ID`."""
+  test3Game(
+    """The globally unique `ID` to be used in selecting a single `Test3Game`."""
+    nodeId: ID!
+  ): Test3Game
+
+  """Get a single `Test3Game`."""
+  test3GameById(id: Int!): Test3Game
+
+  """Reads a single `Test3PlayerAction` using its globally unique `ID`."""
+  test3PlayerAction(
+    """
+    The globally unique `ID` to be used in selecting a single `Test3PlayerAction`.
+    """
+    nodeId: ID!
+  ): Test3PlayerAction
+
+  """Get a single `Test3PlayerAction`."""
+  test3PlayerActionById(id: Int!): Test3PlayerAction
+
   """Reads a single `TestPlayer` using its globally unique `ID`."""
   testPlayer(
     """
@@ -686,6 +1046,170 @@ type Query implements Node {
 
   """Get a single `TestPlayer`."""
   testPlayerById(id: Int!): TestPlayer
+}
+
+type Test3Game implements Node {
+  counter: Int!
+  id: Int!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  state: String!
+}
+
+"""
+A condition to be used against `Test3Game` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input Test3GameCondition {
+  """Checks for equality with the object’s `counter` field."""
+  counter: Int
+
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `state` field."""
+  state: String
+}
+
+"""An input for mutations affecting `Test3Game`"""
+input Test3GameInput {
+  counter: Int
+  id: Int
+  state: String
+}
+
+"""
+Represents an update to a `Test3Game`. Fields that are set will be updated.
+"""
+input Test3GamePatch {
+  counter: Int
+  id: Int
+  state: String
+}
+
+"""A connection to a list of `Test3Game` values."""
+type Test3GamesConnection {
+  """
+  A list of edges which contains the `Test3Game` and cursor to aid in pagination.
+  """
+  edges: [Test3GamesEdge!]!
+
+  """A list of `Test3Game` objects."""
+  nodes: [Test3Game!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Test3Game` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Test3Game` edge in the connection."""
+type Test3GamesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Test3Game` at the end of the edge."""
+  node: Test3Game!
+}
+
+"""Methods to use when ordering `Test3Game`."""
+enum Test3GamesOrderBy {
+  COUNTER_ASC
+  COUNTER_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  STATE_ASC
+  STATE_DESC
+}
+
+type Test3PlayerAction implements Node {
+  action: String!
+  id: Int!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  value: Int!
+}
+
+"""
+A condition to be used against `Test3PlayerAction` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input Test3PlayerActionCondition {
+  """Checks for equality with the object’s `action` field."""
+  action: String
+
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `value` field."""
+  value: Int
+}
+
+"""An input for mutations affecting `Test3PlayerAction`"""
+input Test3PlayerActionInput {
+  action: String
+  id: Int
+  value: Int
+}
+
+"""
+Represents an update to a `Test3PlayerAction`. Fields that are set will be updated.
+"""
+input Test3PlayerActionPatch {
+  action: String
+  id: Int
+  value: Int
+}
+
+"""A connection to a list of `Test3PlayerAction` values."""
+type Test3PlayerActionsConnection {
+  """
+  A list of edges which contains the `Test3PlayerAction` and cursor to aid in pagination.
+  """
+  edges: [Test3PlayerActionsEdge!]!
+
+  """A list of `Test3PlayerAction` objects."""
+  nodes: [Test3PlayerAction!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `Test3PlayerAction` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `Test3PlayerAction` edge in the connection."""
+type Test3PlayerActionsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Test3PlayerAction` at the end of the edge."""
+  node: Test3PlayerAction!
+}
+
+"""Methods to use when ordering `Test3PlayerAction`."""
+enum Test3PlayerActionsOrderBy {
+  ACTION_ASC
+  ACTION_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  VALUE_ASC
+  VALUE_DESC
 }
 
 type TestPlayer implements Node {
@@ -881,6 +1405,120 @@ type UpdatePrismaMigrationPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+}
+
+"""All input for the `updateTest3GameById` mutation."""
+input UpdateTest3GameByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: Int!
+
+  """
+  An object where the defined keys will be set on the `Test3Game` being updated.
+  """
+  test3GamePatch: Test3GamePatch!
+}
+
+"""All input for the `updateTest3Game` mutation."""
+input UpdateTest3GameInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Test3Game` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Test3Game` being updated.
+  """
+  test3GamePatch: Test3GamePatch!
+}
+
+"""The output of our update `Test3Game` mutation."""
+type UpdateTest3GamePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Test3Game` that was updated by this mutation."""
+  test3Game: Test3Game
+
+  """An edge for our `Test3Game`. May be used by Relay 1."""
+  test3GameEdge(
+    """The method to use when ordering `Test3Game`."""
+    orderBy: [Test3GamesOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): Test3GamesEdge
+}
+
+"""All input for the `updateTest3PlayerActionById` mutation."""
+input UpdateTest3PlayerActionByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: Int!
+
+  """
+  An object where the defined keys will be set on the `Test3PlayerAction` being updated.
+  """
+  test3PlayerActionPatch: Test3PlayerActionPatch!
+}
+
+"""All input for the `updateTest3PlayerAction` mutation."""
+input UpdateTest3PlayerActionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Test3PlayerAction` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Test3PlayerAction` being updated.
+  """
+  test3PlayerActionPatch: Test3PlayerActionPatch!
+}
+
+"""The output of our update `Test3PlayerAction` mutation."""
+type UpdateTest3PlayerActionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Test3PlayerAction` that was updated by this mutation."""
+  test3PlayerAction: Test3PlayerAction
+
+  """An edge for our `Test3PlayerAction`. May be used by Relay 1."""
+  test3PlayerActionEdge(
+    """The method to use when ordering `Test3PlayerAction`."""
+    orderBy: [Test3PlayerActionsOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): Test3PlayerActionsEdge
 }
 
 """All input for the `updateTestPlayerById` mutation."""

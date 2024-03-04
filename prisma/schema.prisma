@@ -23,3 +23,35 @@ model TestPlayer {
   uuid          String    @default("")
   username      String    @default("")
 }
+
+// model Test2Player {
+//   id            Int       @id @default(autoincrement())
+//   uuid          String    @default("")
+//   slot          Int       @default(0)
+//   existing      Int[]     @default([])
+//   lastTake      Int       @default(0)
+//   state         String    @default("")
+// }
+// 
+// model Test2Game {
+//   id            Int       @id @default(autoincrement())
+//   state         String    @default("IDLE")
+//   remaining     Int       @default(42)
+//   round         Int       @default(0)
+//   turn          Int       @default(0)
+//   activePlayer  String    @default("")
+//   players       String[]  @default([])
+//   playersRemaining        String[] @default([])
+// }
+
+model Test3PlayerAction {
+  id            Int       @id @default(autoincrement())
+  action        String    @default("")
+  value         Int       @default(0)
+}
+
+model Test3Game {
+  id            Int       @id @default(autoincrement())
+  state         String    @default("A")
+  counter       Int       @default(0)
+}

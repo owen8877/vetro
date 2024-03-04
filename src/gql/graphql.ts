@@ -92,6 +92,72 @@ export type CreatePrismaMigrationPayload_PrismaMigrationEdgeArgs = {
   orderBy?: Array<_PrismaMigrationsOrderBy>;
 };
 
+/** All input for the create `Test3Game` mutation. */
+export type CreateTest3GameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `Test3Game` to be created by this mutation. */
+  test3Game: Test3GameInput;
+};
+
+/** The output of our create `Test3Game` mutation. */
+export type CreateTest3GamePayload = {
+  __typename?: 'CreateTest3GamePayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Test3Game` that was created by this mutation. */
+  test3Game?: Maybe<Test3Game>;
+  /** An edge for our `Test3Game`. May be used by Relay 1. */
+  test3GameEdge?: Maybe<Test3GamesEdge>;
+};
+
+
+/** The output of our create `Test3Game` mutation. */
+export type CreateTest3GamePayloadTest3GameEdgeArgs = {
+  orderBy?: Array<Test3GamesOrderBy>;
+};
+
+/** All input for the create `Test3PlayerAction` mutation. */
+export type CreateTest3PlayerActionInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `Test3PlayerAction` to be created by this mutation. */
+  test3PlayerAction: Test3PlayerActionInput;
+};
+
+/** The output of our create `Test3PlayerAction` mutation. */
+export type CreateTest3PlayerActionPayload = {
+  __typename?: 'CreateTest3PlayerActionPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Test3PlayerAction` that was created by this mutation. */
+  test3PlayerAction?: Maybe<Test3PlayerAction>;
+  /** An edge for our `Test3PlayerAction`. May be used by Relay 1. */
+  test3PlayerActionEdge?: Maybe<Test3PlayerActionsEdge>;
+};
+
+
+/** The output of our create `Test3PlayerAction` mutation. */
+export type CreateTest3PlayerActionPayloadTest3PlayerActionEdgeArgs = {
+  orderBy?: Array<Test3PlayerActionsOrderBy>;
+};
+
 /** All input for the create `TestPlayer` mutation. */
 export type CreateTestPlayerInput = {
   /**
@@ -213,6 +279,94 @@ export type DeletePrismaMigrationPayload_PrismaMigrationEdgeArgs = {
   orderBy?: Array<_PrismaMigrationsOrderBy>;
 };
 
+/** All input for the `deleteTest3GameById` mutation. */
+export type DeleteTest3GameByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+};
+
+/** All input for the `deleteTest3Game` mutation. */
+export type DeleteTest3GameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Test3Game` to be deleted. */
+  nodeId: Scalars['ID']['input'];
+};
+
+/** The output of our delete `Test3Game` mutation. */
+export type DeleteTest3GamePayload = {
+  __typename?: 'DeleteTest3GamePayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedTest3GameId?: Maybe<Scalars['ID']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Test3Game` that was deleted by this mutation. */
+  test3Game?: Maybe<Test3Game>;
+  /** An edge for our `Test3Game`. May be used by Relay 1. */
+  test3GameEdge?: Maybe<Test3GamesEdge>;
+};
+
+
+/** The output of our delete `Test3Game` mutation. */
+export type DeleteTest3GamePayloadTest3GameEdgeArgs = {
+  orderBy?: Array<Test3GamesOrderBy>;
+};
+
+/** All input for the `deleteTest3PlayerActionById` mutation. */
+export type DeleteTest3PlayerActionByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+};
+
+/** All input for the `deleteTest3PlayerAction` mutation. */
+export type DeleteTest3PlayerActionInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Test3PlayerAction` to be deleted. */
+  nodeId: Scalars['ID']['input'];
+};
+
+/** The output of our delete `Test3PlayerAction` mutation. */
+export type DeleteTest3PlayerActionPayload = {
+  __typename?: 'DeleteTest3PlayerActionPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedTest3PlayerActionId?: Maybe<Scalars['ID']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Test3PlayerAction` that was deleted by this mutation. */
+  test3PlayerAction?: Maybe<Test3PlayerAction>;
+  /** An edge for our `Test3PlayerAction`. May be used by Relay 1. */
+  test3PlayerActionEdge?: Maybe<Test3PlayerActionsEdge>;
+};
+
+
+/** The output of our delete `Test3PlayerAction` mutation. */
+export type DeleteTest3PlayerActionPayloadTest3PlayerActionEdgeArgs = {
+  orderBy?: Array<Test3PlayerActionsOrderBy>;
+};
+
 /** All input for the `deleteTestPlayerById` mutation. */
 export type DeleteTestPlayerByIdInput = {
   /**
@@ -264,6 +418,10 @@ export type Mutation = {
   createPlayer?: Maybe<CreatePlayerPayload>;
   /** Creates a single `_PrismaMigration`. */
   createPrismaMigration?: Maybe<CreatePrismaMigrationPayload>;
+  /** Creates a single `Test3Game`. */
+  createTest3Game?: Maybe<CreateTest3GamePayload>;
+  /** Creates a single `Test3PlayerAction`. */
+  createTest3PlayerAction?: Maybe<CreateTest3PlayerActionPayload>;
   /** Creates a single `TestPlayer`. */
   createTestPlayer?: Maybe<CreateTestPlayerPayload>;
   /** Deletes a single `Player` using its globally unique id. */
@@ -274,6 +432,14 @@ export type Mutation = {
   deletePrismaMigration?: Maybe<DeletePrismaMigrationPayload>;
   /** Deletes a single `_PrismaMigration` using a unique key. */
   deletePrismaMigrationById?: Maybe<DeletePrismaMigrationPayload>;
+  /** Deletes a single `Test3Game` using its globally unique id. */
+  deleteTest3Game?: Maybe<DeleteTest3GamePayload>;
+  /** Deletes a single `Test3Game` using a unique key. */
+  deleteTest3GameById?: Maybe<DeleteTest3GamePayload>;
+  /** Deletes a single `Test3PlayerAction` using its globally unique id. */
+  deleteTest3PlayerAction?: Maybe<DeleteTest3PlayerActionPayload>;
+  /** Deletes a single `Test3PlayerAction` using a unique key. */
+  deleteTest3PlayerActionById?: Maybe<DeleteTest3PlayerActionPayload>;
   /** Deletes a single `TestPlayer` using its globally unique id. */
   deleteTestPlayer?: Maybe<DeleteTestPlayerPayload>;
   /** Deletes a single `TestPlayer` using a unique key. */
@@ -286,6 +452,14 @@ export type Mutation = {
   updatePrismaMigration?: Maybe<UpdatePrismaMigrationPayload>;
   /** Updates a single `_PrismaMigration` using a unique key and a patch. */
   updatePrismaMigrationById?: Maybe<UpdatePrismaMigrationPayload>;
+  /** Updates a single `Test3Game` using its globally unique id and a patch. */
+  updateTest3Game?: Maybe<UpdateTest3GamePayload>;
+  /** Updates a single `Test3Game` using a unique key and a patch. */
+  updateTest3GameById?: Maybe<UpdateTest3GamePayload>;
+  /** Updates a single `Test3PlayerAction` using its globally unique id and a patch. */
+  updateTest3PlayerAction?: Maybe<UpdateTest3PlayerActionPayload>;
+  /** Updates a single `Test3PlayerAction` using a unique key and a patch. */
+  updateTest3PlayerActionById?: Maybe<UpdateTest3PlayerActionPayload>;
   /** Updates a single `TestPlayer` using its globally unique id and a patch. */
   updateTestPlayer?: Maybe<UpdateTestPlayerPayload>;
   /** Updates a single `TestPlayer` using a unique key and a patch. */
@@ -302,6 +476,18 @@ export type MutationCreatePlayerArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreatePrismaMigrationArgs = {
   input: CreatePrismaMigrationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateTest3GameArgs = {
+  input: CreateTest3GameInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateTest3PlayerActionArgs = {
+  input: CreateTest3PlayerActionInput;
 };
 
 
@@ -332,6 +518,30 @@ export type MutationDeletePrismaMigrationArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeletePrismaMigrationByIdArgs = {
   input: DeletePrismaMigrationByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteTest3GameArgs = {
+  input: DeleteTest3GameInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteTest3GameByIdArgs = {
+  input: DeleteTest3GameByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteTest3PlayerActionArgs = {
+  input: DeleteTest3PlayerActionInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteTest3PlayerActionByIdArgs = {
+  input: DeleteTest3PlayerActionByIdInput;
 };
 
 
@@ -368,6 +578,30 @@ export type MutationUpdatePrismaMigrationArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdatePrismaMigrationByIdArgs = {
   input: UpdatePrismaMigrationByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateTest3GameArgs = {
+  input: UpdateTest3GameInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateTest3GameByIdArgs = {
+  input: UpdateTest3GameByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateTest3PlayerActionArgs = {
+  input: UpdateTest3PlayerActionInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateTest3PlayerActionByIdArgs = {
+  input: UpdateTest3PlayerActionByIdInput;
 };
 
 
@@ -491,6 +725,14 @@ export type Query = Node & {
   allPrismaMigrations?: Maybe<_PrismaMigrationsConnection>;
   /** Reads a set of `_PrismaMigration`. */
   allPrismaMigrationsList?: Maybe<Array<_PrismaMigration>>;
+  /** Reads and enables pagination through a set of `Test3Game`. */
+  allTest3Games?: Maybe<Test3GamesConnection>;
+  /** Reads a set of `Test3Game`. */
+  allTest3GamesList?: Maybe<Array<Test3Game>>;
+  /** Reads and enables pagination through a set of `Test3PlayerAction`. */
+  allTest3PlayerActions?: Maybe<Test3PlayerActionsConnection>;
+  /** Reads a set of `Test3PlayerAction`. */
+  allTest3PlayerActionsList?: Maybe<Array<Test3PlayerAction>>;
   /** Reads and enables pagination through a set of `TestPlayer`. */
   allTestPlayers?: Maybe<TestPlayersConnection>;
   /** Reads a set of `TestPlayer`. */
@@ -508,6 +750,14 @@ export type Query = Node & {
    * which can only query top level fields if they are in a particular form.
    */
   query: Query;
+  /** Reads a single `Test3Game` using its globally unique `ID`. */
+  test3Game?: Maybe<Test3Game>;
+  /** Get a single `Test3Game`. */
+  test3GameById?: Maybe<Test3Game>;
+  /** Reads a single `Test3PlayerAction` using its globally unique `ID`. */
+  test3PlayerAction?: Maybe<Test3PlayerAction>;
+  /** Get a single `Test3PlayerAction`. */
+  test3PlayerActionById?: Maybe<Test3PlayerAction>;
   /** Reads a single `TestPlayer` using its globally unique `ID`. */
   testPlayer?: Maybe<TestPlayer>;
   /** Get a single `TestPlayer`. */
@@ -570,6 +820,48 @@ export type QueryAllPrismaMigrationsListArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryAllTest3GamesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<Test3GameCondition>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<Test3GamesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAllTest3GamesListArgs = {
+  condition?: InputMaybe<Test3GameCondition>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<Test3GamesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAllTest3PlayerActionsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<Test3PlayerActionCondition>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<Test3PlayerActionsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAllTest3PlayerActionsListArgs = {
+  condition?: InputMaybe<Test3PlayerActionCondition>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<Test3PlayerActionsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryAllTestPlayersArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -609,6 +901,30 @@ export type QueryPlayerByIdArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryTest3GameArgs = {
+  nodeId: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTest3GameByIdArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTest3PlayerActionArgs = {
+  nodeId: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTest3PlayerActionByIdArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryTestPlayerArgs = {
   nodeId: Scalars['ID']['input'];
 };
@@ -618,6 +934,148 @@ export type QueryTestPlayerArgs = {
 export type QueryTestPlayerByIdArgs = {
   id: Scalars['Int']['input'];
 };
+
+export type Test3Game = Node & {
+  __typename?: 'Test3Game';
+  counter: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']['output'];
+  state: Scalars['String']['output'];
+};
+
+/**
+ * A condition to be used against `Test3Game` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type Test3GameCondition = {
+  /** Checks for equality with the object’s `counter` field. */
+  counter?: InputMaybe<Scalars['Int']['input']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Checks for equality with the object’s `state` field. */
+  state?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** An input for mutations affecting `Test3Game` */
+export type Test3GameInput = {
+  counter?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Represents an update to a `Test3Game`. Fields that are set will be updated. */
+export type Test3GamePatch = {
+  counter?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** A connection to a list of `Test3Game` values. */
+export type Test3GamesConnection = {
+  __typename?: 'Test3GamesConnection';
+  /** A list of edges which contains the `Test3Game` and cursor to aid in pagination. */
+  edges: Array<Test3GamesEdge>;
+  /** A list of `Test3Game` objects. */
+  nodes: Array<Test3Game>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Test3Game` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A `Test3Game` edge in the connection. */
+export type Test3GamesEdge = {
+  __typename?: 'Test3GamesEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `Test3Game` at the end of the edge. */
+  node: Test3Game;
+};
+
+/** Methods to use when ordering `Test3Game`. */
+export enum Test3GamesOrderBy {
+  CounterAsc = 'COUNTER_ASC',
+  CounterDesc = 'COUNTER_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  StateAsc = 'STATE_ASC',
+  StateDesc = 'STATE_DESC'
+}
+
+export type Test3PlayerAction = Node & {
+  __typename?: 'Test3PlayerAction';
+  action: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']['output'];
+  value: Scalars['Int']['output'];
+};
+
+/**
+ * A condition to be used against `Test3PlayerAction` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type Test3PlayerActionCondition = {
+  /** Checks for equality with the object’s `action` field. */
+  action?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Checks for equality with the object’s `value` field. */
+  value?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** An input for mutations affecting `Test3PlayerAction` */
+export type Test3PlayerActionInput = {
+  action?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  value?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** Represents an update to a `Test3PlayerAction`. Fields that are set will be updated. */
+export type Test3PlayerActionPatch = {
+  action?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  value?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** A connection to a list of `Test3PlayerAction` values. */
+export type Test3PlayerActionsConnection = {
+  __typename?: 'Test3PlayerActionsConnection';
+  /** A list of edges which contains the `Test3PlayerAction` and cursor to aid in pagination. */
+  edges: Array<Test3PlayerActionsEdge>;
+  /** A list of `Test3PlayerAction` objects. */
+  nodes: Array<Test3PlayerAction>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Test3PlayerAction` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A `Test3PlayerAction` edge in the connection. */
+export type Test3PlayerActionsEdge = {
+  __typename?: 'Test3PlayerActionsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `Test3PlayerAction` at the end of the edge. */
+  node: Test3PlayerAction;
+};
+
+/** Methods to use when ordering `Test3PlayerAction`. */
+export enum Test3PlayerActionsOrderBy {
+  ActionAsc = 'ACTION_ASC',
+  ActionDesc = 'ACTION_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  ValueAsc = 'VALUE_ASC',
+  ValueDesc = 'VALUE_DESC'
+}
 
 export type TestPlayer = Node & {
   __typename?: 'TestPlayer';
@@ -782,6 +1240,100 @@ export type UpdatePrismaMigrationPayload = {
 /** The output of our update `_PrismaMigration` mutation. */
 export type UpdatePrismaMigrationPayload_PrismaMigrationEdgeArgs = {
   orderBy?: Array<_PrismaMigrationsOrderBy>;
+};
+
+/** All input for the `updateTest3GameById` mutation. */
+export type UpdateTest3GameByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+  /** An object where the defined keys will be set on the `Test3Game` being updated. */
+  test3GamePatch: Test3GamePatch;
+};
+
+/** All input for the `updateTest3Game` mutation. */
+export type UpdateTest3GameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Test3Game` to be updated. */
+  nodeId: Scalars['ID']['input'];
+  /** An object where the defined keys will be set on the `Test3Game` being updated. */
+  test3GamePatch: Test3GamePatch;
+};
+
+/** The output of our update `Test3Game` mutation. */
+export type UpdateTest3GamePayload = {
+  __typename?: 'UpdateTest3GamePayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Test3Game` that was updated by this mutation. */
+  test3Game?: Maybe<Test3Game>;
+  /** An edge for our `Test3Game`. May be used by Relay 1. */
+  test3GameEdge?: Maybe<Test3GamesEdge>;
+};
+
+
+/** The output of our update `Test3Game` mutation. */
+export type UpdateTest3GamePayloadTest3GameEdgeArgs = {
+  orderBy?: Array<Test3GamesOrderBy>;
+};
+
+/** All input for the `updateTest3PlayerActionById` mutation. */
+export type UpdateTest3PlayerActionByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+  /** An object where the defined keys will be set on the `Test3PlayerAction` being updated. */
+  test3PlayerActionPatch: Test3PlayerActionPatch;
+};
+
+/** All input for the `updateTest3PlayerAction` mutation. */
+export type UpdateTest3PlayerActionInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Test3PlayerAction` to be updated. */
+  nodeId: Scalars['ID']['input'];
+  /** An object where the defined keys will be set on the `Test3PlayerAction` being updated. */
+  test3PlayerActionPatch: Test3PlayerActionPatch;
+};
+
+/** The output of our update `Test3PlayerAction` mutation. */
+export type UpdateTest3PlayerActionPayload = {
+  __typename?: 'UpdateTest3PlayerActionPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Test3PlayerAction` that was updated by this mutation. */
+  test3PlayerAction?: Maybe<Test3PlayerAction>;
+  /** An edge for our `Test3PlayerAction`. May be used by Relay 1. */
+  test3PlayerActionEdge?: Maybe<Test3PlayerActionsEdge>;
+};
+
+
+/** The output of our update `Test3PlayerAction` mutation. */
+export type UpdateTest3PlayerActionPayloadTest3PlayerActionEdgeArgs = {
+  orderBy?: Array<Test3PlayerActionsOrderBy>;
 };
 
 /** All input for the `updateTestPlayerById` mutation. */

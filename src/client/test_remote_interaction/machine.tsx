@@ -1,60 +1,100 @@
 import { ActorRef, assign, createMachine, enqueueActions, sendParent, sendTo } from "xstate";
 
 type PlayerModel = {
-  id: string,
+  slot: number,
+  uuid: string,
   existing: number[],
-  last_take: 0,
+  lastTake: 0,
 };
 
 type PlayerModelWithRef = {
-  id: string,
+  slot: number,
   ref: any,
 };
 
 export const playerMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QAcA2BDAnmATgOgEkARAGQFEBiAQQHUqAlIsogbQAYBdRFAe1gEsALvx4A7biAAeiACwA2NngBMATjkyAHAFYNARi0BmXXIDsJgDQhMiA2y14dGmSqN6NLlQF9PltFlyEpJRMJAQAygAqzOxcSCDIfEIi4nHSCK54ZiZsBnK6us5yKiZaltbpTnhOGkq6JroqNSa53r4Y2PjE5NQAwhEEAGpUUTESCQLCYhJpSrN4Kvp2WmxySjIyJRpliLWKyw0mGiZFcgrqrfHtAUw9xAQAcgDiFBFUANJko3HjSVOpiPoNA5dBo2DklkoNE5tgglCYVPNlgYDGotHIUSotDJvD4QKIeBA4GMrjgxolJilQGljA50bZ5DI2Iyiko5DDdHMXBtavpjmitLoLn4OoFyGSJslpjYClUGlpVKotCZIWiYUZFOj0TIUUo2EcWrjhdcyLciA9HuLfpSpIh1LTkUz1EyVi4Ybs8A74dpjrVbHIhSS8DQHvdzZaKVKEPJ7OjdGx6siDLMVEy1SmHMmdHVqvoDAH-PgSAB5MJh77kyX-dJzeUaXLFJNxlylKyyPR4PUJlF1XNKHGeIA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QAcA2BDAnmATgOgHUBBASQBUSA5AcQGIjiAlAEQFFmBtABgF1EUA9rACWAF2ECAdvxAAPRACYAjAFY8ANi6alAFh1cuKzSoAcAGhCZEAZmsm8u3dfULrOgOwnbAX28W0WLiEpBQ0tGwAMiQAymTs3HxIIMhCYhLSSfIInngAnF4GuZoeJiq6FlYItvaOOs6uJW6+-hjY+MTkVHREAMIUAGpEcQkyKSLiUjJZOQrq+SpuLlzOOhWIue54XEqaJgoqCoc71krNya1BbD0kzF20ZEQA0qwjSWNpk5mIALR6eNZaXK5ZY6YH5HQmVaWRBKIoaUzuBQmSHWdxcREqM4BNqEKiUO6MVjRVhkV6CcbpKY2dxqAEqFSGAEmVS6FRrKonDSHBZKDFlBS5HRYi74CIAeWiBKJJLJyVSEwyoCyHh0DnUnmswPUJi4uVm1nZtiUXP2Jz5SgFwsC+BuEVYtFiREYpN4o3llK+CEO9hMngU7msrkhSiU7NU1i2KJMS3c7h0Kncvj8IEkAggcFGIrdFM+Sp+Si4CjwKh0IYFDWWXFB7NyeD0yItOohwIhVpxttY2Y+irkiB06jU6hO6ILG1hApr6jwkNBFtRAP00bbl1Y11uNC7CqpCG+JeLpYtercler0IQcJneoU+g2diXyexQQIeK6m49ea9Ci4eX0KiB2uvZx3ENIENFUP8GmsP9SnUZdRQlV83ndXNewQPY8ADOo6kMP9S3cdR2XjTZUQZQx61mQU4OCToNyQnMeyydDMLcGl6VyC0B3ZVwi3yZk7C-Ut6RMJNvCAA */
   id: 'player',
   initial: "IDLE",
-  context: ({ input }) => ({
-    id: input.id,
+  context: {
+    slot: 0,
+    uuid: "",
     existing: [],
-    last_take: 0,
-  } as PlayerModel),
+    lastTake: 0,
+  } as PlayerModel,
   states: {
     IDLE: {
       on: {
-        AWARDED: {
-          target: "WINNING",
-        },
-        DELISTED: {
-          target: "LOSING",
-        },
-        ACTIVATE: {
-          target: 'DECIDING',
-        }
+        START: "WAITING"
       }
     },
+
     DECIDING: {
       on: {
         TAKE: {
-          target: 'IDLE',
+          target: "WAITING",
+
           actions: [
             sendParent(({ event }) => ({ type: 'TAKE', value: event.value })),
             assign({
-              last_take: ({ event }) => event.value,
+              lastTake: ({ event }) => event.value,
               existing: ({ context, event }) => context.existing.concat([event.value]),
             })
           ],
+
+          reenter: true
         }
       }
     },
-    WINNING: {},
-    LOSING: {},
+
+    WINNING: {
+      on: {
+        RESET: {
+          target: 'IDLE',
+          actions: 'reset',
+        }
+      }
+    },
+
+    LOSING: {
+      on: {
+        RESET: {
+          target: 'IDLE',
+          actions: 'reset',
+        }
+      }
+    },
+
+    WAITING: {
+      on: {
+        ACTIVATE: {
+          target: "DECIDING",
+          reenter: true
+        },
+
+        DELISTED: {
+          target: "LOSING",
+          reenter: true
+        },
+
+        AWARDED: {
+          target: "WINNING",
+          reenter: true
+        }
+      }
+    }
+  }
+}, {
+  actions: {
+    reset: assign({
+      lastTake: 0,
+      existing: [],
+    })
   }
 });
 
 export const gameMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5RQIYFswDoCSARAMgKIDEAygCoCCASuQPoAK1hA2gAwC6ioADgPawAlgBdBfAHbcQAD0QAmAKyYFATgAsbAMyKAjGoAcANk36dcgDQgAnoh2G5mOQHY1ctmpV63mhQF9flqgYmEyEdADilACyJBQ05OxcSCD8QqISUrIImmyYanZqBmwKcvoKCppOFtaIlUpOxYb2Kk4KWmzG-oHoWNQA8gCqAHK4IczEiVKpImKSyVkquXLa+i4KOupqhmWWNghOlZgNcqXqLSqqOl0gQb2DI5jkA9RDYySTydPpc6BZOjq5MyaAzlJyLAq7WxsKqYewnRpaNRtTTXW6YfrDUZPF6YXCEADCeBIVAA0qxOFMBDMMvN5CoHE57EU1MDCh0FJCEP9PJhNJoAfpNMZPFp9Kieuj7ljnq8GH0KBMKZ8qd9Mog1IzMJ5th0kT59NU9gKdMoGmVVCoVKyxQEbhKMQ9sbL5eQJjokrwVbM1QhFIZHNDFMs9B1DByaly2Dp9HlKiZ-k0nHZxcEHdKcXKFSw5B6Ul6ab91aUjoVDFoy-9VoZOfp9Ll8k5BUKmiykSm7piQi7Fbmvt7adl3I4nCOyjoFKsGjpOWGVJgdD5FI0wxq1O3MIQRsRmKRCAklZ60v3CwgPLlinZSmCXCyhZzL8PXO5PE+fP5beI+BA4FJbpSjwWMiIAAtPkWo+EiCjNCo9jGJywHnosYYLlGbRWvo9JOOueBEP+1I-EBp6Gogqy8sUrhNJajIGn4tpoqEETRIQeGqgOriYFG+pQVaHT6AYnI5HObC8WwyxGLqWzrmmLHHoR-q6gohSVMJcbbJy5QOOolTOBciKaCoUlSm8MmAX8okcYYSJKQ0WgHE4M4aLy+l1qo6z2OOhmdk6JkEVkikWVZLI2XG9kRp4c7qOUL46CO16eY6MrGcqAG+VCDgKdZKl2fewlOLyDZmLeGqWvF6avHihJ4j5PoAnldirFGrSrJF4ZGjk-qFEmLRuDZyZ0faRlOl2FDVWxiy8gc0Iarqhgwa1tjLJosIXM0DQ+AuNrdKmRmZuQo0nnIMGONGgpyMVzjmjWjmKdGE4alBGxyOum64PthEeDGbAYTFWjRnYqgCbWvIKGs0Ig41T3vkAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5RQIYFswDoBKBBA6gMQDaADALqKgAOA9rAJYAuDtAdlSAB6IDMArJn4AOXqV4B2AGwAWUv1JzeAGhABPRAEYpmzDMkzNAJgCcvKUZlSAvtdWoMmAArYAogH0A4rgCyrwgDKACq42EFklEggdIws7Jw8COaYJsLCpBnppBKp-FKqGgj6ukbSFvxGRlK8lTK29uhY2ADyAKoAcgAizm4kFJwxzKwcUYkmpJhGNcISMvyaJjJWwvwFiBKSmBKklcKLJjn8Jpr1IA5NbV2YQa3Y7T3+EQP0Q-GjWpoTxrwyK-w5pG0MjWCE+EiMmAslXkUnEc3Ep3OOEu3Rud0wnVcAGEAJKYwghADSrieUUGcRGoESpgh0ks6X0SzkUlW6g+x0wvF4n1E1WO4mEiMayI6qNu9yczWCfUiNBeFISiBk0hS2nSsn4AmERhBPN0-1IfxMxp+vyFjhaouu4ucUqCJE0sui8uGioQRjyk2yHqmmmZLN1gOEekkvGEmm0Ugk2nNFytaIldpIRid5Nd7yKRmDsys4lhEZm+TZCDSE0MElE5iksh+-FjIqukulpLlsXTVL4ikmEh7K00Ih7gJBLJMmE0Ag9MJZyrqdjOwtcXUIbgCrnC-TJLreHaKaRSvzy2T2Rh20l16U5fsPPwyJh09bxABl-MFQkF3C4SRvW69KdwtKOLLyMIyoVKInysoUpi8HoyppL8xjRrwJi2HObC0BAcCcOczxttu-4IAAtIYKQCHMeSmHeVQqMWhH8IIBz8HMFgHCYTH1ng+C4b+bqmJg8jiDsFRGAsFbAsWnwyJy2TVjIUzzEhvD1p+Xi+K43EKhmfFyGxMhmIakmyOJhTmMGBxWGY47RiyRgcSiGntgRUj8RqSySBkoZSMIIL0RCiySCJpRcrkdlWp+Dn4YknwQqQrn6Ns4gbBIw5yJyyHpEc8wWP2oVXAmEV-okTEuXMbkJaGyXFsco6LBRPa+XkKFzkilp5Ta4WbnhhVaDsJVMfFHlJYG2ScuWxj6D8ORNQ0Foota6KYrimIFW6YJjl52yaBIA61ZBWhiM5SzRgcJ4JTGzXCq1Yrok2QQrRmekTKG2TKrFFkBhJUwwVIbEsdsAjjoKF2zWFdr3TupjOSJaQ1MqJilH8IIgRMTGaCsIHbTo8P1ounTgwRVgQrCoZZsagIiCCYYSKRexmBsTGiNN86OE+6mdTxWmjgJYg+iJBwrDRUFiOtIjVtGsw+hIqHWEAA */
   id: 'game',
   // preserveActionOrder: true,
   context: {
@@ -64,24 +104,25 @@ export const gameMachine = createMachine({
     players: [] as PlayerModelWithRef[],
     playersRemaining: [] as PlayerModelWithRef[],
     activePlayer: undefined as (undefined | ActorRef),
-    winningPlayer: undefined as (undefined | ActorRef),
   },
-  initial: 'IDLE',
+  initial: "RAW",
+  entry: [
+    () => console.log('Entry of game machine: spawning players'),
+    assign({
+      players: ({ spawn }) => [0, 1, 2].map(slot => ({
+        slot,
+        ref: spawn(playerMachine, { input: { slot } }),
+      })),
+    }),
+  ],
   states: {
-    IDLE: {
-      on: {
-        START_PRE: {
-          target: "PRE_GAME",
-          actions: [
-            () => console.log('Start pre game: spawning players'),
-            assign({
-              players: ({ spawn }) => ['0', '1', '2'].map(id => ({
-                id,
-                ref: spawn(playerMachine, { input: { id } }),
-              })),
-            }),
-          ]
-        }
+    // Is this working or redundant?
+    RAW: {
+      always: {
+        target: "IDLE",
+        actions: [],
+        reenter: true,
+        guard: ({ context }) => context.players.length > 0,
       }
     },
 
@@ -91,7 +132,6 @@ export const gameMachine = createMachine({
           target: "ROUND",
           actions: [
             () => console.log('Start game'),
-            'startGame',
           ],
         }
       }
@@ -150,7 +190,6 @@ export const gameMachine = createMachine({
                   target: "#game.END",
                   guard: ({ context }) => context.remaining <= 0,
                   actions: [
-                    assign({ winningPlayer: ({ context }) => context.activePlayer }),
                   ],
                 },
                 {
@@ -205,7 +244,7 @@ export const gameMachine = createMachine({
         () => console.log('Game has ended!'),
         enqueueActions(({ context, enqueue }) => {
           for (const player of context.players) {
-            if (player.id === context.winningPlayer.id) {
+            if (player.id === context.activePlayer.id) {
               enqueue.sendTo(player.ref, { type: 'AWARDED' });
             } else {
               enqueue.sendTo(player.ref, { type: 'DELISTED' });
@@ -216,16 +255,25 @@ export const gameMachine = createMachine({
       on: {
         RESET: {
           target: "IDLE",
+
           actions: [
-            () => console.log('Releasing memory...'),
+            () => console.log('Reseting...'),
             enqueueActions(({ context, enqueue }) => {
               for (const player of context.players) {
-                enqueue.stopChild(player.ref);
+                enqueue.sendTo(player.ref, { type: 'RESET' });
               }
             }),
             assign({ players: [], round: 0, turn: 0, remaining: 42, activePlayer: undefined, playersRemaining: [] })
           ],
+
+          reenter: true
         }
+      }
+    },
+
+    IDLE: {
+      on: {
+        START_PRE: "PRE_GAME"
       }
     }
   }

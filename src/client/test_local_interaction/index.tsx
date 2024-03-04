@@ -6,13 +6,13 @@ const selector = (state) => ({
   id: state.context.id,
   existing: state.context.existing,
   last_take: state.context.last_take,
-  is_idle: state.matches('IDLE'),
+  is_deciding: state.matches('DECIDING'),
   is_winning: state.matches('WINNING'),
   is_losing: state.matches('LOSING'),
 });
 
 function Player({ playerRef }) {
-  const { id, existing, last_take, is_idle, is_winning, is_losing } = useSelector(playerRef, selector);
+  const { id, existing, last_take, is_deciding, is_winning, is_losing } = useSelector(playerRef, selector);
 
   return (
     <div>
@@ -20,12 +20,12 @@ function Player({ playerRef }) {
       <p>existing: [{existing.join(',')}]</p>
       {is_winning && <p>Yay!</p>}
       {is_losing && <p>Losing, is just another opportunity to get better!</p>}
-      {is_idle
-        ? <p>Last take: {last_take}</p>
-        : <div>
+      {is_deciding
+        ? <div>
           <button type='button' onClick={() => playerRef.send({ type: 'TAKE', value: 1 })}>Take 1</button>
           <button type='button' onClick={() => playerRef.send({ type: 'TAKE', value: 2 })}>Take 2</button>
-        </div>}
+        </div>
+        : <p>Last take: {last_take}</p>}
     </div>
   )
 }

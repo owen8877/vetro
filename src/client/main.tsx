@@ -6,6 +6,8 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import './index.css'
 import TestPlayers from './test_player';
 import TestLocalInteraction from './test_local_interaction';
+import TestRemoteInteraction from './test_remote_interaction';
+import TestRemoteSimple from './test_remote_simple';
 import Graph from './digraph';
 import Player from './player';
 import { is_production } from '../server/util';
@@ -28,6 +30,12 @@ function Root() {
             </li>
             <li>
               <Link to={"/test_local_interaction"}>[Test] local interaction</Link>
+            </li>
+            <li>
+              <Link to={"/test_remote_interaction"}>[Test] remote interaction</Link>
+            </li>
+            <li>
+              <Link to={"/test_remote_simple"}>[Test] remote simple</Link>
             </li>
           </ul>
         </nav>
@@ -67,6 +75,14 @@ const router = createBrowserRouter([
       {
         path: "test_local_interaction",
         element: <TestLocalInteraction />,
+      },
+      {
+        path: "test_remote_interaction",
+        element: <TestRemoteInteraction />,
+      },
+      {
+        path: "test_remote_simple",
+        element: <TestRemoteSimple />,
       },
       {
         index: true,
