@@ -6,8 +6,8 @@ import { is_production } from '../../server/util';
 import { gameMachine } from './machine';
 
 // "undefined" means the URL will be computed from the `window.location` object
-const URL = is_production ? undefined : import.meta.env.VITE_WS_PATH;
-const socket = io(`${URL}/test_remote_simple`);
+const URL = is_production ? undefined : `${import.meta.env.VITE_WS_PATH}/test_remote_simple`;
+const socket = io(URL);
 
 function Player({ playerRef, socket }) {
   return (
