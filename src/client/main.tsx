@@ -93,7 +93,7 @@ const router = createBrowserRouter([
 ]);
 
 const client = new ApolloClient({
-  uri: is_production ? '/graphql' : import.meta.env.VITE_GRAPHQL_PATH,
+  uri: `${is_production ? '' : import.meta.env.VITE_SERVER_PATH}/graphql`,
   cache: new InMemoryCache()
 });
 

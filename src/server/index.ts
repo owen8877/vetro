@@ -3,9 +3,11 @@ import express from 'express';
 import postgraphile from 'postgraphile';
 import { grafserv } from "postgraphile/grafserv/express/v4";
 import path from 'path';
+import { Server } from 'socket.io';
 
 import { is_development } from './util';
 import preset from "./graphile.config";
+import testRemoteSimple from './test_remote_simple';
 
 const app = express();
 
@@ -18,6 +20,9 @@ if (is_development) {
 // Handle React.js compiled files
 const buildPath = path.normalize(path.join(__dirname, '../../dist'));
 app.use(express.static(buildPath));
+
+// Main router
+app.use(express.json());
 app.use((req, res, next) => {
   if (req.path.startsWith('/graphql')) {
     next()
@@ -45,3 +50,22 @@ if (typeof address !== 'string') {
   const href = `http://localhost:${address?.port}/graphql`;
   console.log(`PostGraphiQL available at ${href} 🚀`);
 }
+
+// Websocket
+const io = new Server(server, {
+  // path: '/ws/test_remote_simple',
+  cors: {
+    origin: "*",
+  }
+});
+testRemoteSimple.register(io);
+
+// Handle the remaining cases
+io.on('connection', (socket) => {
+  console.log('Warning: a user connected, but in a general namespace');
+  console.log(socket);
+
+  socket.on('disconnect', () => {
+    console.log('Warning: a user disconnected, but in a general namespace');
+  });
+});

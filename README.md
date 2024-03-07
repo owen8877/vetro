@@ -10,6 +10,12 @@
 - https://react.dev/reference/react/Component
 - https://stackoverflow.com/questions/77486735/docker-with-vite-env-variables-are-undefined-inside-the-docker-container
 - https://github.com/async-library/react-async/issues/330#issuecomment-1207374688
+- child component rerender?
+
+### WS
+- https://www.nginx.com/blog/websocket-nginx/
+- https://socket.io/docs/v4/tutorial/step-3
+- https://socket.io/how-to/use-with-react
 
 ### State machine
 - 

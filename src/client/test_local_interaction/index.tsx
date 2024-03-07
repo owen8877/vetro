@@ -14,6 +14,8 @@ const selector = (state) => ({
 function Player({ playerRef }) {
   const { id, existing, last_take, is_deciding, is_winning, is_losing } = useSelector(playerRef, selector);
 
+  console.log(playerRef);
+
   return (
     <div>
       <h3>Player: {id}</h3>
