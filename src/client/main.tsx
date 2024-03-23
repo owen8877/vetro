@@ -4,13 +4,13 @@ import { createBrowserRouter, RouterProvider, Outlet, Link } from "react-router-
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 import './index.css'
-import TestPlayers from './test_player';
-import TestLocalInteraction from './test_local_interaction';
-import TestRemoteInteraction from './test_remote_interaction';
-import TestRemoteSimple from './test_remote_simple';
-import Graph from './digraph';
-import Player from './player';
-import { is_production } from '../server/util';
+import TestPlayers from '../modules/test_player';
+import TestLocalInteraction from '../modules/test_local_interaction';
+import TestRemoteInteraction from '../modules/test_remote_interaction';
+import TestRemoteSimple from '../modules/test_remote_simple';
+import Graph from '../modules/digraph';
+import Player from '../modules/player';
+import { is_production } from '../util';
 
 function Root() {
   return (

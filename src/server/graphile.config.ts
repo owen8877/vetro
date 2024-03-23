@@ -3,7 +3,7 @@ import { PostGraphileAmberPreset } from "postgraphile/presets/amber";
 import { makeV4Preset } from "postgraphile/presets/v4";
 import { makePgService } from "postgraphile/adaptors/pg";
 
-import { is_development } from "./util";
+import { is_development } from "../util";
 
 const preset: GraphileConfig.Preset = {
   extends: [
@@ -27,7 +27,9 @@ const preset: GraphileConfig.Preset = {
   },
   schema: {
     retryOnInitFail: true,
-    exportSchemaSDLPath: is_development ? `${process.cwd()}/src/schema.graphql` : undefined,
+    exportSchemaSDLPath: is_development
+      ? `${process.cwd()}/src/schema.graphql`
+      : undefined,
     // exportSchemaIntrospectionResultPath: is_development ? `${process.cwd()}/src/schema.json` : undefined,
     sortExport: is_development,
   },
