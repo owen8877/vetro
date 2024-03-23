@@ -8,6 +8,7 @@ import { Server } from "socket.io";
 import { is_development } from "../util";
 import preset from "./graphile.config";
 import testRemoteSimple from "../modules/test_remote_simple/server";
+import testRemoteStone from "../modules/test_remote_stone/server";
 
 const app = express();
 
@@ -52,12 +53,12 @@ if (typeof address !== "string") {
 
 // Websocket
 const io = new Server(server, {
-  // path: '/ws/test_remote_simple',
   cors: {
     origin: "*",
   },
 });
 testRemoteSimple.register(io);
+testRemoteStone.register(io);
 
 // Handle the remaining cases
 io.on("connection", (socket) => {

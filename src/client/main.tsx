@@ -8,6 +8,7 @@ import TestPlayers from '../modules/test_player';
 import TestLocalInteraction from '../modules/test_local_interaction';
 import TestRemoteInteraction from '../modules/test_remote_interaction';
 import TestRemoteSimple from '../modules/test_remote_simple';
+import TestRemoteStone from '../modules/test_remote_stone';
 import Graph from '../modules/digraph';
 import Player from '../modules/player';
 import { is_production } from '../util';
@@ -36,6 +37,9 @@ function Root() {
             </li>
             <li>
               <Link to={"/test_remote_simple"}>[Test] remote simple</Link>
+            </li>
+            <li>
+              <Link to={"/test_remote_stone"}>[Test] remote stone</Link>
             </li>
           </ul>
         </nav>
@@ -85,6 +89,10 @@ const router = createBrowserRouter([
         element: <TestRemoteSimple />,
       },
       {
+        path: "test_remote_stone",
+        element: <TestRemoteStone />,
+      },
+      {
         index: true,
         element: <Index />,
       }
@@ -100,10 +108,8 @@ const client = new ApolloClient({
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    {/* <> */}
     <ApolloProvider client={client}>
       <RouterProvider router={router} />
     </ApolloProvider>
-    {/* </> */}
   </React.StrictMode>
 )

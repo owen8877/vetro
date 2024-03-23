@@ -25,7 +25,8 @@ const arxivRef = createActor(arxivMachine, {
         console.log('[Broadcaster] socket -> local', event);
       },
     }
-  }
+  },
+  systemId: 'arxiv',
 });
 arxivRef.start();
 

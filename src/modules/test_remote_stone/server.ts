@@ -5,8 +5,10 @@ import {
   arxivMachine,
   FTPacket,
   TPacket,
-  ft2t,
+  _2t,
   OnSocketEvent,
+  GameContext,
+  PlayerContext,
 } from "./machine";
 import { GameSummary, LocalSend, RemoteSend } from "./types";
 
@@ -14,9 +16,14 @@ interface Sockets {
   [key: string]: Socket;
 }
 
+function randomPermutation(l: number) {
+  return Array.from({ length: l }, (_, i) => i).sort(() => Math.random() - 0.5);
+}
+
 function register(io: Server) {
   const sockets: Sockets = {};
-  const ns = io.of("/test_remote_simple");
+  const ns = io.of("/test_remote_stone");
+
   const machine = createActor(arxivMachine, {
     input: {
       broadcaster: {
@@ -33,8 +40,44 @@ function register(io: Server) {
           if (socket === undefined) {
             console.error(`Socket ${event.from} not found!`);
           } else {
-            socket.broadcast.emit("remote.send", ft2t(event) as RemoteSend);
+            socket.broadcast.emit("remote.send", _2t(event) as RemoteSend);
             serveGame(false, ns);
+          }
+        },
+      },
+      gameHook: {
+        onIdle(context: GameContext, enqueue) {
+          const { playerRefs } = context;
+          const playerOrder = randomPermutation(playerRefs.length);
+          for (const playerRef of playerRefs) {
+            const { uuid, systemId } = playerRef.getSnapshot().context;
+            if (uuid === undefined) {
+              enqueue.sendTo(({ system }) => system.get("arxiv"), {
+                type: "onLocal",
+                to: systemId,
+                event: { type: "register", uuid: undefined },
+              });
+            }
+          }
+          enqueue.sendTo(({ system }) => system.get("arxiv"), {
+            type: "onLocal",
+            to: "game",
+            event: { type: "start", playerOrder },
+          });
+        },
+      },
+      playerHook: {
+        onDeciding(context: PlayerContext, enqueue) {
+          console.log("???");
+
+          const { uuid, systemId } = context;
+          if (uuid === undefined) {
+            console.log("We kindly skip the player without UUID");
+            enqueue.sendTo(({ system }) => system.get("arxiv"), {
+              type: "onLocal",
+              to: systemId,
+              event: { type: "yield" },
+            });
           }
         },
       },
@@ -49,20 +92,19 @@ function register(io: Server) {
     if (gameRef === undefined) {
       throw new Error("GameRef is undefined");
     }
-    const { playerRef } = gameRef.getSnapshot().context;
-    if (playerRef === undefined) {
-      throw new Error("PlayerRef is undefined");
-    }
     const { context, value: state } = gameRef.getSnapshot();
+    const { playerRefs } = context;
 
     const reduced = {
-      counter: context.counter,
-      players: [
-        {
-          slot: 0,
-          magic: playerRef.getSnapshot().context.magic,
-        },
-      ],
+      counter: context.remaining,
+      players: playerRefs.map((playerRef) => {
+        const { context } = playerRef.getSnapshot();
+        const { winning, uuid } = context;
+        return {
+          winning,
+          uuid,
+        };
+      }),
       exogenous,
     };
 
