@@ -1,7 +1,7 @@
 import {
- ActorRefFrom,
- ActorSystem,
- ActorSystemInfo,
+ type ActorRefFrom,
+ type ActorSystem,
+ type ActorSystemInfo,
  assertEvent,
  assign,
  createMachine,
@@ -30,6 +30,7 @@ export type PlayerContext = {
  winning: undefined | boolean;
  uuid: undefined | string;
  systemId: string;
+ slot: number;
  hook: PlayerHook;
 };
 export interface PlayerHook {
@@ -58,6 +59,8 @@ export const playerMachine = setup({
  context: ({ input }) => ({
   winning: undefined,
   uuid: undefined,
+  // @ts-ignore
+  slot: input.slot,
   // @ts-ignore
   systemId: input.systemId,
   // @ts-ignore
@@ -186,7 +189,7 @@ export type GameContext = {
  hook: GameHook;
 };
 export const gameMachine = createMachine({
- /** @xstate-layout N4IgpgJg5mDOIC5RQIYFswDoCSARAMgKIDEA2gAwC6ioADgPawCWALk-QHY0gAeiATAHZBmAGwBmAKwBOaQEZRcweTkAOUQBoQATwHjxmBcoAsy8WqXlVAX2tbUGTAAV8AQQCa2AHIBxHARJaABsUbTAAJwAVFABrMApqJBAGZjZObj4EUUVDc3FRZXJxY2zNHURxdUxjVWNiuSVKwUl+W3t0LBcPbz88ImJg0Ij3JjAgiATuFNZ2LiTMyTVMSvJ+FsFi4zljLV0EOoNyIv5pUX4VK0q2kAdOt09fTFxCAGE8QlwyKinGGfT5xAtAxrfj8VSCLayaRrXYCUTGaryOSScQbSQSaQ2Ow3DrOe49J6vd6fUhyRJ0X5pOagTIQgySVT1fRrOSXWEIcRWTBCaEM8jScTSSRFa63PHdR4AZUirgASpEvuTkpTZhlEKJTmINqo5Gt9DriuzRPzuYIdcadRChdJRbjZYQfNhpbLXJFsAB5LzEWAsFDhFhOcLxb5JaZUtUIfjw7nkSQo-INQTSUySdkHTBHcQnM4XRkQ22OQheXA9YhB2BgFiTUMq-40iqyTDo-h1GqghnZdmsw6qfmqXvkY3GYU27Fipz2gD6PlcAFkSD6-VWQxTUqqAZGNcthJVzHHpEnkUas9zhVYzQzkUpbNiOPQIHBuLcfmu67xEHJodVFqo1ozVHy4hdpImDKEKaixtI-LGAekgFlgfSEC+fzUu+kbGPwmCnIosjGjIogyEB5QIA0IH8EYzTyC25GCK0Y64l0Dw+Mh4YbqY5DLL2IIbMYWyCjsxGghxUHCP22yFKs8Hikx-hECx671lk8hiC25AbMiZoYfwaZChmzSxgoSjZqiUmMQSzxvM8uDyW+CxRlh5jqJy5CmM07L5CBGoCkOmJ8cOpn4lKMryjZqELCioEHp+kjCFBaipsREggRhxixoon5QlJ9qOs6roel4oURqp35qH+lSAe5LlYQUSUwUc0GiFJRYlr4hUbsKqjbi5fG9iUMhdsi3IUTIuoYUZplTjO85tYp1HVThpyQQRArssKmHCIIiiiOCOq-qOthAA */
+ /** @xstate-layout N4IgpgJg5mDOIC5RQIYFswDoCSARAMgKIDEA2gAwC6ioADgPawCWALk-QHY0gAeiATAHZBmAGwBmAKwBOaQEZRcweTkAOUQBoQATwHjxmBcoAsy8WqXlVAX2tbUGTAAV8AQQCa2AHIBxHARJaABsUbTAAJwAVFABrMApqJBAGZjZObj4EUUVDc3FRZXJxY2zNHURxdUxjVWNiuSVKwUl+W3t0LBcPbz88ImJg0Ij3JjAgiATuFNZ2LiTMyTVMSvJ+FsFi4zljLV0EOoNyIv5pUX4VK0q2kAdOt09fTFxCAGE8QlwyKinGGfT5xAtAxrfj8VSCLayaRrXYCUTGaryOSScQbSQSaQ2Ow3DrOe49J6vd6fUhyRJ0X5pOagTIQgySVT1fRrOSXWEIcRWTBCaEM8jScTSSRFa63PHdR4AZUirgASpEvuTkpTZhlEKJTmINqo5Gt9DriuzRPzuYIdcadRChdJRbjZYQfNhpbLXJFsAB5LzEWAsFDhFhOcLxb5JaZUtUIfjw7nkSQo-INQTSUySdkHTBHcQnM4XRkQ22OQheXA9YhB2BgFiTUMq-40iqyTDo-h1GqghnZdmsw6qfmqXvkY3GYU27Fipz2gD6PlcAFkSD6-VWQxTUqqAZGNcthJVzHHpEnkUas9zhVYzQzkUpbNiOPQIHBuLcfmu67xEHJodVFqo1ozVHy4hdpImDKEKCgyNkAq6gWWB9IQL5-NS76RsY-CYKciiyMakEyEB5QIA0IH8EYzTyC2JGCK0Y64l0Dw+Ih4YbqY5DLL2IIbMYWyCjsBGgqx0jkMI6iiLUMiMqIsHivR-hEIx671lk8hiC2Ql7maaH8GmQoZs0sYKEo2aolJdEEs8bzPLg8lvgsUYYeY6icuQpjNOy+QgRqApDpi3HDiZ+JSjK8rWchCwoqBB6fpIwiCWoqYERIIFocYsaKJ+UJSfajrOq6HpeCFEaqd+ah-pUgFuc5GEFIlxiCUcyaSTRhbFj0BUbsKqjbs5KUaqyUZFF2yLcqRMi6mhhkmVOM7zm1ikUVVWGnLGpx4eywrocIgiKKJZolaOthAA */
  id: "game",
  types: {} as {
   context: GameContext;
@@ -197,11 +200,11 @@ export const gameMachine = createMachine({
   remaining: 0,
   playerRefs: [
    spawn(playerMachine, {
-    input: { systemId: "player-0", hook: input.playerHook },
+    input: { systemId: "player-0", hook: input.playerHook, slot: 0 },
     systemId: "player-0",
    }),
    spawn(playerMachine, {
-    input: { systemId: "player-1", hook: input.playerHook },
+    input: { systemId: "player-1", hook: input.playerHook, slot: 1 },
     systemId: "player-1",
    }),
   ],
@@ -397,18 +400,20 @@ export function dispatch({
  }, 100);
 }
 
+export type arxivContext = {
+ gameRef: undefined | GameRef;
+ replayPointer: number;
+ exogenous: TPacket[];
+ broadcaster: Broadcaster;
+ block: boolean;
+};
+
 // TODO: hugely rely on robustness of existing network
 export const arxivMachine = createMachine({
  /** @xstate-layout N4IgpgJg5mDOIC5QEMBOAPAlgNwHQGUBNAOQGEBiAewDt9KBjAazABcBtABgF1FQAHSrEwtMNXiHSIAbBwAcuWbIDsAViUBODgEZlq2QBoQAT2kAmKbnVbTAFlMBmDko5SbU2QF8PhtFjxEyKmoAGQZkABtOHiQQASERMRjJBCktG1wpe1lU9w5TWTyVQxMEGzsMh1cpdXsVVw57Lx8MHFwALQBRYiCASWphKPE44VFqcWSHLVwbOtdlK3sZpRtixBstFVwteyV7WxVtLOqmkF9Wzu6afDBUbBu+ge4hwRHE0AmtKa0rJW-1FXMUjUplWCBUNiU0wcZQhEJUOy0JzOeAASh0AArBACChB6xAA4uRBjFhgkxklEPZ1JClFJ3KYODVsqoNqCbBx0jpfkpfvD4RwVEiWqiMdjcQSiVpovwXmTxmtTJsVOD7PYtFJaezlFJQeqpjsqYplr9lLYhX5cAB1LE9AAqeMJNAAIjQwMSZfFRvKELZIblTdtUoqtKDbOpcGpaopTJo7AdBSdqJQIHBxMjnp63hJKV9TPkActGTMrDrjIhlrgOIUtLsdrJauZza0AqQM69ye81hXFP9FJ8ZgzdqC6uGlAUY7J-ry8k28Bc23KKQgNFs87IC+z1MWQWXSmOthpzIqVDUXKZZ7g0ZicQ6F16l-ZUgoIa4amkBTXQXtNgKtzZxxsKiKFIF7Wnat4krK96dj6Nj2BkMgnrIeplNsBi7joUz-qY3x7MyOSNF4HhAA */
  id: "arxiv",
  types: {} as {
-  context: {
-   gameRef: undefined | GameRef;
-   replayPointer: number;
-   exogenous: TPacket[];
-   broadcaster: Broadcaster;
-   block: boolean;
-  };
+  context: arxivContext;
   events: MetaEvent;
   input: {
    broadcaster: Broadcaster;
@@ -434,8 +439,13 @@ export const arxivMachine = createMachine({
      target: "SYNC",
      actions: [
       log(({ event }) => event, "socket"),
-      ({ context: { broadcaster, exogenous }, event: metaEvent }) => {
-       exogenous.push(_2t(metaEvent));
+      assign({
+       exogenous: ({ context: { exogenous }, event: metaEvent }) => [
+        ...exogenous,
+        _2t(metaEvent),
+       ],
+      }),
+      ({ context: { broadcaster }, event: metaEvent }) => {
        broadcaster.from_socket(_2ft(metaEvent));
       },
       dispatch,
@@ -446,10 +456,14 @@ export const arxivMachine = createMachine({
      target: "SYNC",
      actions: [
       log(({ event }) => event, "local"),
-      ({ context: { broadcaster, exogenous }, event: metaEvent }) => {
-       const event = _2t(metaEvent);
-       exogenous.push(event);
-       broadcaster.from_local(event);
+      assign({
+       exogenous: ({ context: { exogenous }, event: metaEvent }) => [
+        ...exogenous,
+        _2t(metaEvent),
+       ],
+      }),
+      ({ context: { broadcaster }, event: metaEvent }) => {
+       broadcaster.from_local(_2t(metaEvent));
       },
       dispatch,
      ],

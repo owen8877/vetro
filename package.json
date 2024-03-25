@@ -1,7 +1,7 @@
 {
   "name": "vetro",
   "private": true,
-  "version": "0.0.13",
+  "version": "0.0.14",
   "type": "module",
   "proxy": "http://localhost:3000",
   "scripts": {
@@ -25,6 +25,7 @@
     "@apollo/client": "^3.9.5",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@prisma/client": "^5.10.2",
+    "@reduxjs/toolkit": "^2.2.2",
     "@statelyai/inspect": "^0.2.5",
     "@xstate/react": "^4.1.0",
     "apollo": "^2.34.0",
@@ -41,6 +42,7 @@
     "react-digraph": "^9.1.2",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.0",
+    "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.2",
     "react-use": "^17.5.0",
     "socket.io": "^4.7.4",

@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider, Outlet, Link } from "react-router-dom";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
-import './index.css'
+import './index.css';
+import { store } from './store';
 import TestPlayers from '../modules/test_player';
 import TestLocalInteraction from '../modules/test_local_interaction';
 import TestRemoteInteraction from '../modules/test_remote_interaction';
@@ -109,7 +111,9 @@ const client = new ApolloClient({
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </ApolloProvider>
   </React.StrictMode>
 )
