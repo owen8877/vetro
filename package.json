@@ -1,7 +1,7 @@
 {
   "name": "vetro",
   "private": true,
-  "version": "0.0.14",
+  "version": "0.0.15",
   "type": "module",
   "proxy": "http://localhost:3000",
   "scripts": {
@@ -13,7 +13,7 @@
     "dev:docker": "docker context use default && docker compose -f config/dev/compose.yaml up -d --build",
     "dev:docker:stop": "docker context use default && docker compose -f config/dev/compose.yaml down",
     "dev:vite": "vite",
-    "dev:lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "dev:lint": "eslint . --ext ts,tsx --report-unugsed-disable-directives --max-warnings 0",
     "dev:preview": "vite preview",
     "dev:codegen": "graphql-codegen --config codegen.ts",
     "prod:test": "bunx prisma generate && bun test",

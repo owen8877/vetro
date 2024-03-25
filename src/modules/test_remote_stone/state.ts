@@ -7,6 +7,7 @@ import type {
 } from "./machine";
 import type { SnapshotFrom, StateValue } from "xstate";
 import type { GameSummary } from "./types";
+import { pl } from "date-fns/locale";
 
 // TODO: keep updated with context
 type PlayerContextSummary = {
@@ -164,7 +165,7 @@ export const remoteStoneSlice = createSlice({
       // if (!lodash.isEqual(state.gameSummary, action.payload)) {
       //   state.gameSummary = action.payload;
       // }
-      state.arxivSummary = action.payload;
+      state.gameSummary = action.payload;
     },
     updatePlayerSummary: (state, action) => {
       const { summary, slot } = action.payload;
@@ -222,8 +223,14 @@ export const remoteStoneSlice = createSlice({
       state.playerSummaries[slot]?.derived,
     selectMeHasRegistered: createSelector(
       [(state) => state.playerSummaries, (state) => state.myUUID],
-      (playerSummaries: PlayerMachineSummary[], myUUID) =>
-        playerSummaries.some((summary) => summary.context.uuid === myUUID),
+      (playerSummaries: PlayerMachineSummary[], myUUID) => {
+        if (playerSummaries.length === 0 || myUUID === undefined) {
+          return false;
+        }
+        return playerSummaries.some(
+          (summary) => summary.context.uuid === myUUID,
+        );
+      },
     ),
   },
 });
