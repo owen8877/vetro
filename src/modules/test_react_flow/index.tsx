@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAsync } from 'react-use';
 import { createContext } from "react";
 import { io } from "socket.io-client";
@@ -19,15 +19,15 @@ import {
   arxivMachineSummarizer,
   type ArxivSnapshot,
   type GameSnapshot,
-  remoteStoneActions as _A,
-  remoteStoneSelectors as _S,
+  reactFlowActions as _A,
+  reactFlowSelectors as _S,
   playerMachineSummarizer,
   type PlayerSnapshot,
 } from './state';
 
 // Socket.io & Websocket related
 // "undefined" means the URL will be computed from the `window.location` object
-const URL = `${is_production ? "" : import.meta.env.VITE_WS_PATH}/test_remote_stone`;
+const URL = `${is_production ? "" : import.meta.env.VITE_WS_PATH}/test_react_flow`;
 const socket = io(URL, { autoConnect: false });
 
 // FSM related
@@ -78,7 +78,7 @@ export const ArxivDispatchContext = createContext<ArxivDispatch>({
   send: () => { },
 });
 
-export default function TestRemoteStone() {
+export default function TestReactFlow() {
   const gameRef = arxivRef.getSnapshot().context.gameRef;
   const playerRefs = gameRef?.getSnapshot().context.playerRefs ?? [];
   const sUUID = useAsync(getUUIDFromStorage);
@@ -117,9 +117,9 @@ export default function TestRemoteStone() {
     socket.on('remote.send', onRemoteSend);
     socket.connect();
 
-    const interval = setInterval(() => {
-      socket.emit('game.request');
-    }, 3000);
+    // const interval = setInterval(() => {
+    //   socket.emit('game.request');
+    // }, 3000);
 
     return () => {
       socket.off('connect', onConnect);
@@ -128,7 +128,7 @@ export default function TestRemoteStone() {
       socket.off('game.update', onServerGame);
       socket.off('remote.send', onRemoteSend);
       socket.disconnect();
-      clearInterval(interval);
+      // clearInterval(interval);
     };
   }, [dispatch]);
 

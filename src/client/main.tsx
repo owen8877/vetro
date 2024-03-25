@@ -11,6 +11,7 @@ import TestLocalInteraction from '../modules/test_local_interaction';
 import TestRemoteInteraction from '../modules/test_remote_interaction';
 import TestRemoteSimple from '../modules/test_remote_simple';
 import TestRemoteStone from '../modules/test_remote_stone';
+import TestReactFlow from '../modules/test_react_flow';
 import Graph from '../modules/digraph';
 import Player from '../modules/player';
 import { is_production } from '../util';
@@ -42,6 +43,9 @@ function Root() {
             </li>
             <li>
               <Link to={"/test_remote_stone"}>[Test] remote stone</Link>
+            </li>
+            <li>
+              <Link to={"/test_react_flow"}>[Test] react flow</Link>
             </li>
           </ul>
         </nav>
@@ -93,6 +97,10 @@ const router = createBrowserRouter([
       {
         path: "test_remote_stone",
         element: <TestRemoteStone />,
+      },
+      {
+        path: "test_react_flow",
+        element: <TestReactFlow />,
       },
       {
         index: true,

@@ -2,13 +2,14 @@ import { createServer } from "node:http";
 import express from "express";
 import postgraphile from "postgraphile";
 import { grafserv } from "postgraphile/grafserv/express/v4";
-import path from "path";
+import path from "node:path";
 import { Server } from "socket.io";
 
 import { is_development } from "../util";
 import preset from "./graphile.config";
 import testRemoteSimple from "../modules/test_remote_simple/server";
 import testRemoteStone from "../modules/test_remote_stone/server";
+import testReactFlow from "../modules/test_react_flow/server";
 
 const app = express();
 
@@ -59,6 +60,7 @@ const io = new Server(server, {
 });
 testRemoteSimple.register(io);
 testRemoteStone.register(io);
+testReactFlow.register(io);
 
 // Handle the remaining cases
 io.on("connection", (socket) => {

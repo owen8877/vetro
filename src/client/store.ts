@@ -2,22 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
 import { remoteStoneReducer } from "../modules/test_remote_stone/state";
+import { reactFlowReducer } from "../modules/test_react_flow/state";
 
 export const store = configureStore({
   reducer: {
     remoteStone: remoteStoneReducer,
+    reactFlow: reactFlowReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        // ignoredActions: [
-        //   "remoteStone/updateArxivSnapshot",
-        //   "remoteStone/updateGameSnapshot",
-        //   "remoteStone/updatePlayerSnapshot",
-        // ],
-        // ignoreState: true,
-      },
-    }),
 });
 
 type RootState = ReturnType<typeof store.getState>;
