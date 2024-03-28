@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
-import { remoteStoneReducer } from "../modules/test_remote_stone/state";
+import { remoteStoneSummaryReducer } from "../modules/test_remote_stone/summary_state";
+import { remoteStoneSessionReducer } from "../modules/test_remote_stone/session_state";
 import { reactFlowReducer } from "../modules/test_react_flow/state";
 
 export const store = configureStore({
   reducer: {
-    remoteStone: remoteStoneReducer,
+    remoteStoneSummary: remoteStoneSummaryReducer,
+    remoteStoneSession: remoteStoneSessionReducer,
     reactFlow: reactFlowReducer,
   },
 });

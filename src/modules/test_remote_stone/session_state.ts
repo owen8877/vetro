@@ -150,8 +150,8 @@ const initialState = {
   serverInfo: undefined,
 } as remoteStoneState;
 
-export const remoteStoneSlice = createSlice({
-  name: "remoteStone",
+export const remoteStoneSessionSlice = createSlice({
+  name: "remoteStoneSession",
   initialState,
   reducers: {
     updateArxivSummary: (state, action) => {
@@ -235,6 +235,6 @@ export const remoteStoneSlice = createSlice({
   },
 });
 
-export const remoteStoneActions = remoteStoneSlice.actions;
-export const remoteStoneSelectors = remoteStoneSlice.selectors;
-export const remoteStoneReducer = remoteStoneSlice.reducer;
+export const remoteStoneSessionActions = remoteStoneSessionSlice.actions;
+export const remoteStoneSessionSelectors = remoteStoneSessionSlice.selectors;
+export const remoteStoneSessionReducer = remoteStoneSessionSlice.reducer;

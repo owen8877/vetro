@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { createBrowserRouter, RouterProvider, Outlet, Link } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet, Link, useRoutes, Router } from "react-router-dom";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 import './index.css';
@@ -10,11 +10,12 @@ import TestPlayers from '../modules/test_player';
 import TestLocalInteraction from '../modules/test_local_interaction';
 import TestRemoteInteraction from '../modules/test_remote_interaction';
 import TestRemoteSimple from '../modules/test_remote_simple';
-import TestRemoteStone from '../modules/test_remote_stone';
+import TestRemoteStoneSummary from '../modules/test_remote_stone/summary';
 import TestReactFlow from '../modules/test_react_flow';
 import Graph from '../modules/digraph';
 import Player from '../modules/player';
 import { is_production } from '../util';
+import TestRemoteStoneSession from '../modules/test_remote_stone/session';
 
 function Root() {
   return (
@@ -42,7 +43,7 @@ function Root() {
               <Link to={"/test_remote_simple"}>[Test] remote simple</Link>
             </li>
             <li>
-              <Link to={"/test_remote_stone"}>[Test] remote stone</Link>
+              <Link to={"/test_remote_stone_summary"}>[Test] remote stone</Link>
             </li>
             <li>
               <Link to={"/test_react_flow"}>[Test] react flow</Link>
@@ -95,8 +96,12 @@ const router = createBrowserRouter([
         element: <TestRemoteSimple />,
       },
       {
-        path: "test_remote_stone",
-        element: <TestRemoteStone />,
+        path: "test_remote_stone_summary",
+        element: <TestRemoteStoneSummary />,
+      },
+      {
+        path: "test_remote_stone_session/:sessionId",
+        element: <TestRemoteStoneSession />,
       },
       {
         path: "test_react_flow",

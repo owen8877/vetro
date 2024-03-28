@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 
 import { useAppSelector } from '../../client/store';
-import { remoteStoneSelectors as _S, remoteStoneActions as _A } from './state';
+import { remoteStoneSessionSelectors as _S, remoteStoneSessionActions as _A } from './session_state';
 import { Player } from './player';
 
 export default function App() {

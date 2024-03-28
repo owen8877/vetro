@@ -2,13 +2,11 @@ import { memo, useContext } from 'react';
 
 import { useAppSelector } from '../../client/store';
 import type { PEvent } from './machine';
-import { ArxivDispatchContext, type ArxivDispatch } from '.';
-import { remoteStoneSelectors as _S } from './state';
+import { remoteStoneSessionSelectors as _S } from './session_state';
+import { ArxivDispatch, ArxivDispatchContext } from './session';
 
-// Why this function keeps running even if the state is not changing?
-// Using React.memo to prevent re-rendering
-export const Player = memo(function Player({ slot }: { slot: number }) {
-	const { send } = useContext<ArxivDispatch>(ArxivDispatchContext);
+const PlayerWithcontext = memo(({ slot, send }: { slot: number, send: ArxivDispatch["send"] }) => {
+	console.log('player rendering');
 
 	const myUUID = useAppSelector(_S.selectMyUUID);
 	const { isIdle, isPrePlay, isEnding, isWaiting, isDeciding } = useAppSelector((state) => _S.selectPlayerDerivedBySlot(state, slot));
@@ -34,8 +32,9 @@ export const Player = memo(function Player({ slot }: { slot: number }) {
 			{/* IDLE state */}
 			{isIdle && myUUID && isRegistration && !isMeRegistered && <>
 				<p>idle, click to</p>
-				<button type='button' onClick={() =>
+				<button type='button' onClick={() => {
 					send({ type: 'onLocal', event: { type: 'register', uuid: myUUID }, to: systemId })
+				}
 				}>Play</button>
 			</>}
 			{/* PRE_PLAY state */}
@@ -74,3 +73,8 @@ export const Player = memo(function Player({ slot }: { slot: number }) {
 		</div >
 	)
 });
+
+export const Player = ({ slot }: { slot: number }) => {
+	const { send } = useContext(ArxivDispatchContext);
+	return <PlayerWithcontext slot={slot} send={send} />;
+}

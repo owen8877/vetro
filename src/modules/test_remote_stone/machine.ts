@@ -167,18 +167,16 @@ export type GEvent =
 
 type PlayerRefs = PlayerRef[];
 
+export type Enqueue = {
+ // @ts-ignore
+ sendTo(
+  // @ts-ignore
+  to: ({ system }: { system: ActorSystem<ActorSystemInfo> }) => Any,
+  event: MetaEvent,
+ );
+};
 export interface GameHook {
- onIdle(
-  context: GameContext,
-  enqueue: {
-   // @ts-ignore
-   sendTo(
-    // @ts-ignore
-    to: ({ system }: { system: ActorSystem<ActorSystemInfo> }) => Any,
-    event: MetaEvent,
-   );
-  },
- ): void;
+ onIdle(context: GameContext, enqueue: Enqueue): void;
 }
 
 export type GameContext = {

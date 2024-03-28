@@ -57,6 +57,7 @@ const io = new Server(server, {
   cors: {
     origin: "*",
   },
+  connectionStateRecovery: {},
 });
 testRemoteSimple.register(io);
 testRemoteStone.register(io);
